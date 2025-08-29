@@ -4,8 +4,8 @@ Functions for loading the meta-data contained in 'subjects_info.csv'.
 Available Functions
 -------------------
 [Public]
-load_meta_data(): loads the meta-data contained in subjects_info.csv into a pandas.DataFrame.
-
+load_meta_data(...): loads the meta-data contained in subjects_info.csv into a pandas.DataFrame.
+get_muscleban_side(...): get the muscleban side based on the mac address
 ------------------
 [Private]
 
@@ -15,7 +15,7 @@ load_meta_data(): loads the meta-data contained in subjects_info.csv into a pand
 # imports
 # ------------------------------------------------------------------------------------------------------------------- #
 import pandas as pd
-from constants import PHONE, WATCH, MBAN_LEFT, MBAN_RIGHT
+from constants import MBAN_LEFT, MBAN_RIGHT
 
 # ------------------------------------------------------------------------------------------------------------------- #
 # public functions

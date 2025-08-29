@@ -25,9 +25,10 @@ _validate_load_devices(...): check if input sensors and devices are valid
 # -------------------------------------------------------------------------------------------------------------------- #
 import re
 from pathlib import Path
-from typing import List, Dict, Optional
+from typing import List, Dict
 from .meta_data import load_meta_data, get_muscleban_side
-from constants import SENSOR_MAP, PHONE, WATCH, MBAN, MAC_ADDRESS_PATTERN, PHONE_SENSORS, WATCH_SENSORS, MBAN_SENSORS
+from constants import PHONE, WATCH, MBAN, MAC_ADDRESS_PATTERN, PHONE_SENSORS, WATCH_SENSORS, MBAN_SENSORS
+from .parser import get_file_by_sensor
 
 # ------------------------------------------------------------------------------------------------------------------- #
 # file specific constants
@@ -68,6 +69,12 @@ def get_sensor_paths_per_device(folder_path: str, load_devices: Dict[str, List[s
 
     :return: Nested dictionary mapping each device to its acquisition times and corresponding file paths.
     """
+    # innit dict for holding the unsorted paths
+    paths_dict: Dict[str, List[Path]] = {}
+
+    # innit dictionary to hold all devices and nested acquisition times and Paths
+    nested_paths_dict: Dict[str, Dict[str, List[Path]]] = {}
+
     # check if folder_path is a directory and if it exists
     if not Path(folder_path).is_dir():
 
@@ -76,12 +83,6 @@ def get_sensor_paths_per_device(folder_path: str, load_devices: Dict[str, List[s
 
     # check load_devices
     _validate_load_devices(load_devices)
-
-    # innit dict for holding the unsorted paths
-    paths_dict: Dict[str, List[Path]] = {}
-
-    # innit dictionary to hold all devices and nested acquisition times and Paths
-    nested_paths_dict: Dict[str, Dict[str, List[Path]]] = {}
 
     # (1) load all files from all daily acquisitions per device into a dictionary
     for device, sensor_list in load_devices.items():
@@ -276,7 +277,7 @@ def _get_android_filepaths(device_name: str, sensor_list: List[str], folder_path
         for sensor in sensor_list:
 
             # get the file path correspondent to the sensor
-            file = _get_file_by_sensor(sensor, files)
+            file = get_file_by_sensor(sensor, files)
 
             # add path if it was found
             if file:
@@ -304,28 +305,6 @@ def _get_mban_files(folder_path: str) -> List[Path]:
     files = [file for file in Path(folder_path).resolve().glob("**/*") if file.is_file() and pattern.search(file.name)]
 
     return files
-
-
-def _get_file_by_sensor(sensor_name: str, files: List[Path]) -> Optional[Path]:
-    """
-    Returns the file name corresponding to the sensor name provided.
-
-    :param sensor_name: Sensor name abbreviation ('ACC', 'GYR', 'MAG', 'ROT', 'NOISE', 'HR')
-    :param files: List of files in the folder
-    :return: File name if found, otherwise None
-    """
-
-    # Extract the corresponding identifier
-    file_identifier = SENSOR_MAP[sensor_name]
-
-    # Search for the file in the list
-    for file in files:
-        if file_identifier in str(file):
-            return file
-
-    # If no file is found
-    print(f"No file found for sensor: {sensor_name}.")
-    return None
 
 
 def _group_files_by_acquisition(files: List[Path]) -> Dict[str, List[Path]]:
