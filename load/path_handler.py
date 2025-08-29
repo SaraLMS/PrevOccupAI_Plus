@@ -9,13 +9,14 @@ get_sensor_paths_per_device(...): Load, filter, and organize sensor file paths f
 
 [Private]
 _get_device_files(...): Collect file paths for a given device. For phone/watch, filters by selected sensors; for MBAN, loads all files.
-keep_largest_file_per_acquisition(...): For each acquisition time, keep only the largest file (used for MBAN data).
+_keep_largest_file_per_acquisition(...): For each acquisition time, keep only the largest file (used for MBAN data).
 _filter_mban_files(...): Replace the "mban" entry with "mban_left" and "mban_right" entries, splitting by MAC address.
 _group_mban_files(...): Split MBAN files into left/right groups based on MAC address and metadata.
 _get_android_filepaths(...): Retrieve phone or watch sensor file paths from the folder, filtering by the requested sensors.
 _get_mban_files(...): Get all MBAN files from the folder using MAC address pattern matching.
 _get_file_by_sensor(...): Find and return the file corresponding to a given sensor name.
 _group_files_by_acquisition(...): Group files by their acquisition folder (immediate parent folder, e.g., '10-20-00').
+_validate_load_devices(...): check if input sensors and devices are valid
 -------------------
 """
 
@@ -26,7 +27,7 @@ import re
 from pathlib import Path
 from typing import List, Dict, Optional
 from .meta_data import load_meta_data, get_muscleban_side
-from constants import SENSOR_MAP, PHONE, WATCH, MBAN, MAC_ADDRESS_PATTERN
+from constants import SENSOR_MAP, PHONE, WATCH, MBAN, MAC_ADDRESS_PATTERN, PHONE_SENSORS, WATCH_SENSORS, MBAN_SENSORS
 
 # ------------------------------------------------------------------------------------------------------------------- #
 # file specific constants
@@ -67,9 +68,14 @@ def get_sensor_paths_per_device(folder_path: str, load_devices: Dict[str, List[s
 
     :return: Nested dictionary mapping each device to its acquisition times and corresponding file paths.
     """
-    # check if path exist
+    # check if folder_path is a directory and if it exists
+    if not Path(folder_path).is_dir():
+
+        # if not directory or does not exist raise error
+        raise NotADirectoryError(f"The path provided: {folder_path} does not exist.")
 
     # check load_devices
+    _validate_load_devices(load_devices)
 
     # innit dict for holding the unsorted paths
     paths_dict: Dict[str, List[Path]] = {}
@@ -99,7 +105,7 @@ def get_sensor_paths_per_device(folder_path: str, load_devices: Dict[str, List[s
         if device not in (PHONE, WATCH):
 
             # group by acquisition time and keep only the largest file - per acquisition each mban will only have one path
-            grouped_acquisitions_dict = keep_largest_file_per_acquisition(grouped_acquisitions_dict)
+            grouped_acquisitions_dict = _keep_largest_file_per_acquisition(grouped_acquisitions_dict)
 
         # add device as key and dict with the times and list of paths as values
         nested_paths_dict[device] = grouped_acquisitions_dict
@@ -138,7 +144,7 @@ def _get_device_files(device: str, sensor_list: List[str], folder_path: str) -> 
         return _get_mban_files(folder_path)
 
 
-def keep_largest_file_per_acquisition(grouped_acquisitions_dict: Dict[str, List[Path]]) -> Dict[str, List[Path]]:
+def _keep_largest_file_per_acquisition(grouped_acquisitions_dict: Dict[str, List[Path]]) -> Dict[str, List[Path]]:
     """
     Keeps only the largest file for each acquisition time in the dictionary.
 
@@ -346,3 +352,45 @@ def _group_files_by_acquisition(files: List[Path]) -> Dict[str, List[Path]]:
         grouped_acquisitions_dict[acquisition_folder].append(file)
 
     return grouped_acquisitions_dict
+
+
+def _validate_load_devices(load_devices: Dict[str, List[str]]) -> None:
+    """
+    Validates the load_devices dictionary to ensure that:
+      - Devices are valid (must be one of {phone, watch, mban}).
+      - Each device's sensors are valid for that device.
+      - Sensors are unique and properly formatted.
+
+    :param load_devices: Dictionary mapping device names to lists of sensor abbreviations.
+                         Example: {"phone": ["ACC", "GYR"], "watch": ["HR"], "mban": ["EMG"]}
+    :raises ValueError: If the dictionary contains invalid devices or sensors.
+    """
+
+    # Define valid devices and their allowed sensors
+    valid_sensors_per_device = {
+        PHONE: PHONE_SENSORS,
+        WATCH: WATCH_SENSORS,
+        MBAN: MBAN_SENSORS
+    }
+
+    # Check each device in the provided dict
+    for device, sensors in load_devices.items():
+        if device not in valid_sensors_per_device:
+            raise ValueError(
+                f"Invalid device '{device}'. Supported devices are: {list(valid_sensors_per_device.keys())}"
+            )
+
+        # Normalize to uppercase in case user provided lowercase
+        sensors = [s.upper() for s in sensors]
+
+        # Check for duplicates
+        if len(sensors) != len(set(sensors)):
+            raise ValueError(f"Duplicate sensors found for device '{device}': {sensors}")
+
+        # Check if sensors are valid for the given device
+        invalid_sensors = [s for s in sensors if s not in valid_sensors_per_device[device]]
+        if invalid_sensors:
+            raise ValueError(
+                f"Invalid sensors for device '{device}': {invalid_sensors}. "
+                f"Valid options are: {valid_sensors_per_device[device]}"
+            )
