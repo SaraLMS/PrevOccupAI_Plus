@@ -108,7 +108,8 @@ def get_sensor_paths_per_device(folder_path: str, load_devices: Dict[str, List[s
             # group by acquisition time and keep only the largest file - per acquisition each mban will only have one path
             grouped_acquisitions_dict = _keep_largest_file_per_acquisition(grouped_acquisitions_dict)
 
-        # add device as key and dict with the times and list of paths as values
+        # add device as key and dict with the times and list of path
+        # s as values
         nested_paths_dict[device] = grouped_acquisitions_dict
 
     return nested_paths_dict
@@ -154,16 +155,35 @@ def _keep_largest_file_per_acquisition(grouped_acquisitions_dict: Dict[str, List
     """
     # cycle though the dictionary with the acquisition times
     for acq_time, paths in grouped_acquisitions_dict.items():
+        size_biggest_file = 0
+        name_biggest_file = None
+        for file_path in paths:
+            file_size = file_path.stat().st_size
+            if file_size > size_biggest_file:
+                size_biggest_file = file_size
+                name_biggest_file = file_path
+        # change dict to keep only the largest file
+        grouped_acquisitions_dict[acq_time] = [name_biggest_file]
+        print(f"  Largest: {name_biggest_file} ({name_biggest_file} bytes)")
 
-        # if path exists
-        if paths:
+        # # if path exists
+        # if paths:
+        #
+        #     # get the largest file for that acquisition time
+        #     largest = max(paths, key=lambda p: p.stat().st_size)
+        #
+        #     # change dict to keep only the largest file
+        #     grouped_acquisitions_dict[acq_time] = [largest]
 
-            # get the largest file for that acquisition time
-            largest = max(paths, key=lambda p: p.stat().st_size)
-
-            # change dict to keep only the largest file
-            grouped_acquisitions_dict[acq_time] = [largest]
-
+        # if paths:
+        #
+        #
+        #     print(f"Files for {acq_time}:")
+        #     for p in paths:
+        #         print(f"  {p}: {p.stat().st_size} bytes")
+        #     largest = max(paths, key=lambda p: p.stat().st_size)
+        #     print(f"  Largest: {largest} ({largest.stat().st_size} bytes)")
+        #     grouped_acquisitions_dict[acq_time] = [largest]
     return grouped_acquisitions_dict
 
 

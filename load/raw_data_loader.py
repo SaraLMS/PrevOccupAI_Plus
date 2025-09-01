@@ -8,7 +8,7 @@ from typing import List, Tuple, Dict, Any, Union
 from tqdm import tqdm
 
 # internal imports
-from constants import PHONE, WATCH, VALID_MBAN_DATA, NSEQ, IMU_SENSORS, TIME_COLUMN_NAME, ROT, NOISE, HEART
+from constants import PHONE, WATCH, VALID_MBAN_DATA, NSEQ, IMU_SENSORS, TIME_COLUMN_NAME, ROT, NOISE, HEART, MBAN
 from .path_handler import get_sensor_paths_per_device
 from .parser import extract_sensor_from_filename
 from .interpolate import cubic_spline_interpolation, slerp_interpolation, zero_order_hold_interpolation, \
@@ -39,47 +39,52 @@ def load_daily_acquisitions(folder_path: str, load_devices: Dict[str, List[str]]
     # get paths for all loaded devices/sensors sorted by device and acquisition time
     paths_dict = get_sensor_paths_per_device(folder_path, load_devices)
 
-    # cycle over the devices in the dictionary
-    for device, acquisitions_dic in paths_dict.items():
+    # if all nested dictionaries are empty
+    if paths_dict and not all(not v for v in paths_dict.values()):
 
-        # add entry to the results dictionary
-        if device not in dataframes_dict:
-            dataframes_dict[device] = {}
+        # cycle over the devices in the dictionary
+        for device, acquisitions_dic in paths_dict.items():
 
-        # loop over the acquisition times keys
-        for acquisition_time, paths_list in acquisitions_dic.items():
+            # add entry to the results dictionary
+            if device not in dataframes_dict:
+                dataframes_dict[device] = {}
 
-            # if the device is a muscleban the loading is handled differently
-            if device != PHONE and device != WATCH:
+            # loop over the acquisition times keys
+            for acquisition_time, paths_list in acquisitions_dic.items():
 
-                # get sensors to be loaded for the mban - to get only the chosen sensors
-                sensor_list_mban = load_devices[device]
+                # if the device is a muscleban the loading is handled differently
+                if device != PHONE and device != WATCH:
 
-                # muscleBAN only has one file per acquisition
-                # load muscleBAN data - only the sensors defined in load_devices
-                muscleban_sensor_data = _load_muscleban_data(paths_list[0], sensor_list_mban)
+                    # get sensors to be loaded for the mban - to get only the chosen sensors
+                    sensor_list_mban = load_devices[MBAN]
 
-                # add to dictionary
-                dataframes_dict[device][acquisition_time] = muscleban_sensor_data
+                    # muscleBAN only has one file per acquisition
+                    # load muscleBAN data - only the sensors defined in load_devices
+                    muscleban_sensor_data = _load_muscleban_data(paths_list[0], sensor_list_mban)
 
-            # if its android device
-            else:
+                    # add to dictionary
+                    dataframes_dict[device][acquisition_time] = muscleban_sensor_data
 
-                # load the data
-                sensor_data, report = _load_raw_data(paths_list)
+                # if its android device
+                else:
 
-                # align the data
-                # (1) pad the data (all sensors start and stop at the same timestep)
-                padded_data = _pad_data(sensor_data, report, padding_type)
+                    # load the data
+                    sensor_data, report = _load_raw_data(paths_list)
 
-                # (2) resample the data to 100 Hz
-                interpolated_data = _re_sample_data(padded_data, report, fs=fs_android)
+                    # align the data
+                    # (1) pad the data (all sensors start and stop at the same timestep)
+                    padded_data = _pad_data(sensor_data, report, padding_type)
 
-                # (3) create a DataFrame containing all the data
-                aligned_sensor_df = pd.concat([interpolated_data[0]] + [df.drop(columns=[TIME_COLUMN_NAME]) for df in interpolated_data[1:]],axis=1)
+                    # (2) resample the data to 100 Hz
+                    interpolated_data = _re_sample_data(padded_data, report, fs=fs_android)
 
-                # add to dictionary
-                dataframes_dict[device][acquisition_time] = aligned_sensor_df
+                    # (3) create a DataFrame containing all the data
+                    aligned_sensor_df = pd.concat([interpolated_data[0]] + [df.drop(columns=[TIME_COLUMN_NAME]) for df in interpolated_data[1:]],axis=1)
+
+                    # add to dictionary
+                    dataframes_dict[device][acquisition_time] = aligned_sensor_df
+    else:
+        print(f"\nWarning: No data was found in {folder_path}. This function will return an empty dictionary.")
 
     return dataframes_dict
 
@@ -441,7 +446,8 @@ def _load_muscleban_data(file_path: Path, sensor_list: List[str]) -> pd.DataFram
     sensor_df.columns = VALID_MBAN_DATA
 
     # keep only the sensors in sensor list (plus nSeq)
-    cols_to_keep = [col for col in sensor_df.columns if col in sensor_list or col == NSEQ]
+    cols_to_keep = [col for col in sensor_df.columns
+                    if any(sensor in col for sensor in sensor_list) or col == NSEQ]
     sensor_df = sensor_df[cols_to_keep]
 
     return sensor_df

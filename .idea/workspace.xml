@@ -5,13 +5,12 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="d6637f5a-b481-472e-9cbc-1b523cdb0fbc" name="Changes" comment="added checks for the loaded sensors and file paths - finishes path_handler">
-      <change afterPath="$PROJECT_DIR$/load/interpolate.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/load/raw_data_loader.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/PrevOccupAI_Plus.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/PrevOccupAI_Plus.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/constants.py" beforeDir="false" afterPath="$PROJECT_DIR$/constants.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/load/meta_data.py" beforeDir="false" afterPath="$PROJECT_DIR$/load/meta_data.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/load/parser.py" beforeDir="false" afterPath="$PROJECT_DIR$/load/parser.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/load/path_handler.py" beforeDir="false" afterPath="$PROJECT_DIR$/load/path_handler.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/load/raw_data_loader.py" beforeDir="false" afterPath="$PROJECT_DIR$/load/raw_data_loader.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -35,12 +34,12 @@
     &quot;assignee&quot;: &quot;SaraLMS&quot;
   }
 }</component>
-  <component name="GithubPullRequestsUISettings">{
-  &quot;selectedUrlAndAccountId&quot;: {
-    &quot;url&quot;: &quot;https://github.com/SaraLMS/PrevOccupAI_Plus.git&quot;,
-    &quot;accountId&quot;: &quot;76d1ec4e-224e-4b70-a646-e8815a264334&quot;
+  <component name="GithubPullRequestsUISettings"><![CDATA[{
+  "selectedUrlAndAccountId": {
+    "url": "https://github.com/SaraLMS/PrevOccupAI_Plus.git",
+    "accountId": "c3de1cfd-a52f-4e11-bcd2-9994e14c8dc5"
   }
-}</component>
+}]]></component>
   <component name="ProjectColorInfo">{
   &quot;associatedIndex&quot;: 2
 }</component>
@@ -49,15 +48,15 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
-    &quot;Python.main.executor&quot;: &quot;Debug&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;master&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "ModuleVcsDetector.initialDetectionPerformed": "true",
+    "Python.main.executor": "Debug",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "git-widget-placeholder": "master"
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
       <recent name="C:\Users\srale\PycharmProjects\PrevOccupAI_Plus" />
@@ -66,10 +65,11 @@
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
-        <option value="bundled-python-sdk-2ee2454479a3-9cdd278e9d02-com.jetbrains.pycharm.community.sharedIndexes.bundled-PC-251.25410.122" />
+        <option value="bundled-python-sdk-1b1018131e27-aa17d162503b-com.jetbrains.pycharm.community.sharedIndexes.bundled-PC-243.22562.180" />
       </set>
     </attachedChunks>
   </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="project-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
       <changelist id="d6637f5a-b481-472e-9cbc-1b523cdb0fbc" name="Changes" comment="" />
@@ -101,5 +101,16 @@
     <MESSAGE value="implemented logic to handle the input sensor paths" />
     <MESSAGE value="added checks for the loaded sensors and file paths - finishes path_handler" />
     <option name="LAST_COMMIT_MESSAGE" value="added checks for the loaded sensors and file paths - finishes path_handler" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/load/raw_data_loader.py</url>
+          <line>36</line>
+          <option name="timeStamp" value="3" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
   </component>
 </project>
