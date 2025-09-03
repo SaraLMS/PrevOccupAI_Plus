@@ -6,6 +6,8 @@ Available Functions
 [Public]
 cubic_spline_interpolation(...): Apply cubic spline interpolation to resample sensor data at a given frequency.
 slerp_interpolation(...): Perform SLERP (Spherical Linear Interpolation) over a quaternion time series.
+zero_order_hold_interpolation(...): Interpolates a signal by repeating the previous value.
+interpolate_heart_rate_sensor(...): Interpolates the heart rate sensor accounting for the starts and stops of the sensor
 ------------------
 [Private]
 _convert_android_timestamp_to_seconds(...): Converts the time column from the android timestamp which is in nanoseconds to seconds.

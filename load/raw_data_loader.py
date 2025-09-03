@@ -1,3 +1,24 @@
+"""
+Functions to load raw sensor data
+
+Available Functions
+-------------------
+[Public]
+load_daily_acquisitions(...): Loads raw sensor data (phone, watch, or MuscleBan) from an entire day.
+-------------------
+
+[Private]
+_load_raw_data(...): Loads and cleans multiple raw sensor data files from a folder.
+_load_sensor_file(...): Loads a single raw sensor file and applies necessary preprocessing steps.
+_clean_df(...): Removes NaN values and duplicates from a DataFrame and resets its index.
+_remove_non_unit_quaternion(...): Filters invalid rotation vector samples that don't represent unit quaternions.
+_pad_data(...): Aligns sensors in time using either zero or same-value padding.
+_create_padding(...): Helper function to generate padding rows for a given list of timestamps and constant values.
+_re_sample_data(...): Resamples raw sensor signals using appropriate interpolation (cubic spline, SLERP, etc.).
+_load_muscleban_data(...): Loads EMG and ACC data from MuscleBan device files, filtering out unreliable data.
+_fix_rounding_error(...): Corrects rounding errors in the time column of the sensor data.
+-------------------
+"""
 # -------------------------------------------------------------------------------------------------------------------- #
 # imports
 # -------------------------------------------------------------------------------------------------------------------- #
@@ -6,6 +27,7 @@ import numpy as np
 from pathlib import Path
 from typing import List, Tuple, Dict, Any, Union
 from tqdm import tqdm
+import math
 
 # internal imports
 from constants import PHONE, WATCH, VALID_MBAN_DATA, NSEQ, IMU_SENSORS, TIME_COLUMN_NAME, ROT, NOISE, HEART, MBAN
@@ -27,6 +49,7 @@ LOADED_SENSORS = 'loaded sensors'
 STARTING_TIMES = 'starting times'
 STOPPING_TIMES = 'stopping times'
 
+ROUNDING_FACTOR = 1000 # sampling rate  times 10
 # -------------------------------------------------------------------------------------------------------------------- #
 # public functions
 # -------------------------------------------------------------------------------------------------------------------- #
@@ -38,12 +61,27 @@ def load_daily_acquisitions(folder_path: str, load_devices: Dict[str, List[str]]
     This function loads sensor data, defined in load_sensors, that is inside folder_path. This function assumes that
     folder_path pertains to the date of the acquisition and that inside there are subfolders regarding the scheduled
     acquisition times, with the correspondent sensor files. This function loads all the data from the devices and sensors
-    defined in load_sensors, into a nested dictionary.
-    :param folder_path:
-    :param load_devices:
-    :param fs_android:
-    :param padding_type:
-    :return:
+    defined in load_sensors, into a nested dictionary with the following format:
+
+    {
+    'phone': {'9-45-00': df},
+    'watch': {'10-00-00': df, '11-20-00': df, '12-00-00': df, '15-40-00': df},
+    'mBAN_left: {'10-00-00': df, '11-20-00': df, '12-00-00': df, '15-40-00': df},
+    'mBAN_right: {'10-00-00': df, '11-20-00': df, '12-00-00': df, '15-40-00': df}
+    }
+
+    Print a report for the user to which devices and sensors were loaded to be informed of any missing data/acquisitions.
+
+    :param folder_path: Path to the folder containing the data of an entire day of acquisitions.
+    :param load_devices: Dictionary with the devices and sensors to be loaded. (e.g.: {phone: [ACC, GYR, MAG], watch: [ACC]}
+                        Supported devices/sensors:
+                        {phone: [ACC, GYR, MAG, ROT, NOISE],
+                         watch: [ACC, GYR, MAG, ROT, HR],
+                         mban: [ACC, EMG]}
+    :param fs_android: the sampling rate to which all android sensors should be re-sampled to. Default: 100 (Hz)
+    :param padding_type: padding which should be used to ensure that all sensors start and stop at the same time. The
+                         following padding types are supported: 'same', 'zero'. Default: 'same'
+    :return: a nested dictionary containing the sensor data from the devices and sensors in load_sensors
     """
     # innit dictionary to hold the dataframes
     dataframes_dict: Dict[str, Dict[str, pd.DataFrame]] = {}
@@ -488,7 +526,7 @@ def _create_loading_report(load_devices: Dict[str, List[str]],
     :param dataframes_dict: Nested dictionary with loaded data per device and acquisition time.
     :return: None
     """
-    print("\n=== Acquisition Report ===")
+    print("\n=== Loading Report ===")
 
     for device, requested_sensors in load_devices.items():
         # find all matching loaded devices (e.g. mban → mBAN_left, mBAN_right)
@@ -520,7 +558,7 @@ def _create_loading_report(load_devices: Dict[str, List[str]],
                 }
                 missing_sensors = set(requested_sensors) - loaded_sensors
 
-                print(f"  Acquisition {acq_time}:")
+                print(f"  Acquisition time: {acq_time}")
                 print(f"    Loaded sensors: {list(loaded_sensors)}")
                 if missing_sensors:
                     print(f"    ⚠ Missing sensors: {list(missing_sensors)}")
