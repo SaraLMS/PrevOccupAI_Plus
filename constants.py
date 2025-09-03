@@ -20,7 +20,7 @@ GYR = 'GYR'
 MAG = 'MAG'
 ROT = 'ROT'
 NOISE = 'NOISE'
-HEART = 'HR'
+HEART = 'HEART'
 EMG = 'EMG'
 
 # define valid sensors for the three devices

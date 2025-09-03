@@ -31,8 +31,20 @@ STOPPING_TIMES = 'stopping times'
 # public functions
 # -------------------------------------------------------------------------------------------------------------------- #
 def load_daily_acquisitions(folder_path: str, load_devices: Dict[str, List[str]], fs_android: int = 100,
-                            padding_type: str = PADDING_SAME):
+                            padding_type: str = PADDING_SAME) -> Dict[str, Dict[str, pd.DataFrame]]:
+    """
+    Load sensor data of an entire day.
 
+    This function loads sensor data, defined in load_sensors, that is inside folder_path. This function assumes that
+    folder_path pertains to the date of the acquisition and that inside there are subfolders regarding the scheduled
+    acquisition times, with the correspondent sensor files. This function loads all the data from the devices and sensors
+    defined in load_sensors, into a nested dictionary.
+    :param folder_path:
+    :param load_devices:
+    :param fs_android:
+    :param padding_type:
+    :return:
+    """
     # innit dictionary to hold the dataframes
     dataframes_dict: Dict[str, Dict[str, pd.DataFrame]] = {}
 
@@ -44,6 +56,9 @@ def load_daily_acquisitions(folder_path: str, load_devices: Dict[str, List[str]]
 
         # cycle over the devices in the dictionary
         for device, acquisitions_dic in paths_dict.items():
+
+            # inform user
+            print(f"\nLoading data from device: {device}.")
 
             # add entry to the results dictionary
             if device not in dataframes_dict:
@@ -79,12 +94,16 @@ def load_daily_acquisitions(folder_path: str, load_devices: Dict[str, List[str]]
                     interpolated_data = _re_sample_data(padded_data, report, fs=fs_android)
 
                     # (3) create a DataFrame containing all the data
-                    aligned_sensor_df = pd.concat([interpolated_data[0]] + [df.drop(columns=[TIME_COLUMN_NAME]) for df in interpolated_data[1:]],axis=1)
+                    aligned_sensor_df = pd.concat(interpolated_data, axis=1)
+                    aligned_sensor_df = aligned_sensor_df.sort_index()
 
                     # add to dictionary
                     dataframes_dict[device][acquisition_time] = aligned_sensor_df
     else:
         print(f"\nWarning: No data was found in {folder_path}. This function will return an empty dictionary.")
+
+    # inform user
+    _create_loading_report(load_devices, dataframes_dict)
 
     return dataframes_dict
 
@@ -362,7 +381,8 @@ def _re_sample_data(sensor_data: List[pd.DataFrame], report:  Dict[str, Any], fs
     This function takes a list of sensor data DataFrames and resamples each sensor's data to the desired
     sampling frequency (`fs`). For IMU-based sensors (ACC, GYR, MAG), cubic spline interpolation is used,
     and for Rotation Vector data, SLERP interpolation is performed. For the noise recorder and heart rate sensor,
-    zero order hold interpolation (repeat the previous value).
+    zero order hold interpolation (repeat the previous value). This function also corrects possible rounding errors
+    in the time column.
 
     :param sensor_data: A list of DataFrames, each containing sensor data. It is assumed that the first contains
                         the time axis, while the other columns contain sensor data.
@@ -410,6 +430,9 @@ def _re_sample_data(sensor_data: List[pd.DataFrame], report:  Dict[str, Any], fs
             # This does not happen - just for code completion
             print(f"There is no interpolation implemented for the sensor you have chosen. Chosen sensor: {sensor_name}.")
 
+        # fix rounding errors in the time column
+        interpolated_sensor_df = _fix_rounding_error(interpolated_sensor_df)
+
         # append interpolated data to list
         re_sampled_data.append(interpolated_sensor_df)
 
@@ -418,14 +441,16 @@ def _re_sample_data(sensor_data: List[pd.DataFrame], report:  Dict[str, Any], fs
 
 def _load_muscleban_data(file_path: Path, sensor_list: List[str]) -> pd.DataFrame:
     """
-    Loads MuscleBan data into a DataFrame. If there are multiple muscleban files, load only the largest one.
+    Loads MuscleBan data into a DataFrame.
 
-    Loads only EMG and accelerometer (x, y, z) signals, removing MAG sensor as it is unreliable.
+    Loads only EMG or/and accelerometer (x, y, z) signals, depending on sensor_list. Removes MAG sensor as it is unreliable.
 
     :param file_path: pathlib.Path to the folder containing the file.
     :param sensor_list: List of str pertaining to the sensors to be loaded for the mban
     :return:  A DataFrame containing the EMG and ACC data from the muscleban
     """
+    # inform user
+    print(f"\nLoading muscleBAN data from file: {file_path.name}.")
 
     # load data into a csv file
     sensor_df = pd.read_csv(file_path, delimiter = '\t', header=None, skiprows=3)
@@ -449,5 +474,97 @@ def _load_muscleban_data(file_path: Path, sensor_list: List[str]) -> pd.DataFram
     cols_to_keep = [col for col in sensor_df.columns
                     if any(sensor in col for sensor in sensor_list) or col == NSEQ]
     sensor_df = sensor_df[cols_to_keep]
+
+    return sensor_df
+
+
+def _create_loading_report(load_devices: Dict[str, List[str]],
+                           dataframes_dict: Dict[str, Dict[str, pd.DataFrame]])-> None:
+    """
+    Prints a report of loaded acquisitions, showing which devices and sensors
+    were successfully loaded and which are missing.
+
+    :param load_devices: Dictionary mapping device names to lists of requested sensors.
+    :param dataframes_dict: Nested dictionary with loaded data per device and acquisition time.
+    :return: None
+    """
+    print("\n=== Acquisition Report ===")
+
+    for device, requested_sensors in load_devices.items():
+        # find all matching loaded devices (e.g. mban → mBAN_left, mBAN_right)
+        matching_devices = [
+            dev for dev in dataframes_dict.keys()
+            if dev.lower().startswith(device.lower())
+        ]
+
+        if not matching_devices:
+            print(f"\nDevice: {device}")
+            print("  No data available.")
+            continue
+
+        for actual_device in matching_devices:
+            print(f"\nDevice: {actual_device}")
+            acquisitions = dataframes_dict[actual_device]
+
+            if not acquisitions:
+                print("  No data available.")
+                continue
+
+            for acq_time, df in acquisitions.items():
+                loaded_columns = list(df.columns)
+
+                # Match requested sensor groups against column names (x_ACC, y_GYR, etc.)
+                loaded_sensors = {
+                    sensor for sensor in requested_sensors
+                    if any(sensor in col for col in loaded_columns)
+                }
+                missing_sensors = set(requested_sensors) - loaded_sensors
+
+                print(f"  Acquisition {acq_time}:")
+                print(f"    Loaded sensors: {list(loaded_sensors)}")
+                if missing_sensors:
+                    print(f"    ⚠ Missing sensors: {list(missing_sensors)}")
+
+
+def _fix_rounding_error(sensor_df: pd.DataFrame) -> pd.DataFrame:
+    """
+    Fixes rounding errors in the time column of the sensor DataFrame. This is done in several steps:
+
+    (1) multiply the time column values by the rounding_factor (sampling rate * 10)
+
+    (2) separates the time series into two: one with the values that are divisible by 10, and the other were they're not
+
+    (3) Sum +1 to all values of the series where te values are not divisible by one
+
+    (4) Concat this two time series back into one and add this to the dataframe as the new time column and device by 1000
+
+    (5) set the time column as axis of the dataframe
+
+    :param sensor_df: pd:DataFrame containing a time column expected to be numeric.
+    :return: pd.DataFrame with the corrected time column replacing the original,
+        sorted and adjusted for rounding errors. The time column is set as the index.
+    """
+
+    # (1) multiply time column by 1000
+    time_column = sensor_df[TIME_COLUMN_NAME].multiply(ROUNDING_FACTOR).apply(math.trunc)
+
+    # (2) separate time series into two series
+    # first series has the values that are divisible by10
+    div_by_10 = time_column[time_column % 10 == 0].sort_values()
+
+    # (3) seconds series has the values that are not divisible by 10
+    not_div_by_10 = time_column[time_column % 10 != 0].sort_values().add(1)
+
+    # (4) concat the two series into one
+    final_time_series = pd.concat([div_by_10, not_div_by_10]).sort_values()
+
+    # Remove 'time' column
+    sensor_df = sensor_df.drop(columns=[TIME_COLUMN_NAME])
+
+    # Assign final_series to 'time' column and divide by the rounding factor
+    sensor_df[TIME_COLUMN_NAME] = final_time_series.div(ROUNDING_FACTOR)
+
+    # (5) set time column as axis
+    sensor_df = sensor_df.set_index(TIME_COLUMN_NAME)
 
     return sensor_df

@@ -11,26 +11,26 @@ from constants import SENSOR_MAP, AVAILABLE_ANDROID_PREFIXES, AVAILABLE_ANDROID_
 # public functions
 # -------------------------------------------------------------------------------------------------------------------- #
 
-def get_file_by_sensor(sensor_name: str, files: Union[List[Path], List[str]]) -> Optional[Union[Path, str]]:
-    """
-    Returns the file name corresponding to the sensor name provided.
-
-    :param sensor_name: Sensor name abbreviation ('ACC', 'GYR', 'MAG', 'ROT', 'NOISE', 'HR')
-    :param files: List of files in the folder
-    :return: File name if found, otherwise None
-    """
-
-    # Extract the corresponding identifier
-    file_identifier = SENSOR_MAP[sensor_name]
-
-    # Search for the file in the list
-    for file in files:
-        if file_identifier in str(file):
-            return file
-
-    # If no file is found
-    print(f"No file found for sensor: {sensor_name}.")
-    return None
+# def get_file_by_sensor(sensor_name: str, files: Union[List[Path], List[str]]) -> Optional[Union[Path, str]]:
+#     """
+#     Returns the file name corresponding to the sensor name provided.
+#
+#     :param sensor_name: Sensor name abbreviation ('ACC', 'GYR', 'MAG', 'ROT', 'NOISE', 'HR')
+#     :param files: List of files in the folder
+#     :return: File name if found, otherwise None
+#     """
+#
+#     # Extract the corresponding identifier
+#     file_identifier = SENSOR_MAP[sensor_name]
+#
+#     # Search for the file in the list
+#     for file in files:
+#         if file_identifier in str(file):
+#             return file
+#
+#     # If no file is found
+#     print(f"No file found for sensor: {sensor_name}.")
+#     return None
 
 
 def extract_sensor_from_filename(filename: str) -> str:

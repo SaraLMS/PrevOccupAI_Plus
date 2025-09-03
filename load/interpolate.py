@@ -198,6 +198,8 @@ def interpolate_heart_rate_sensor(sensor_df: pd.DataFrame, fs: int = 100) -> pd.
         if len(hr_segment_df) < 2:
             continue
 
+        time_axis_segment[0] = np.floor(time_axis_segment[0])
+
         # define the new time axis
         time_axis_inter = np.arange(time_axis_segment[0], time_axis_segment[-1], 1 / fs)
 
@@ -218,6 +220,7 @@ def interpolate_heart_rate_sensor(sensor_df: pd.DataFrame, fs: int = 100) -> pd.
     interpolated_df = pd.concat(interpolated_segments, ignore_index=True)
 
     return interpolated_df
+
 
 
 def resample_signals(sensor_df: pd.DataFrame, fs, fs_new) -> pd.DataFrame:

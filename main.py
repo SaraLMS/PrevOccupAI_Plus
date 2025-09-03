@@ -9,13 +9,13 @@ import os
 # ------------------------------------------------------------------------------------------------------------------- #
 
 SELECTED_SENSORS = {'phone': ['ACC', 'GYR', 'MAG', 'ROT', 'NOISE'],
-                    'watch': ['ACC', 'GYR', 'MAG','ROT', 'HR'],
+                    'watch': ['ACC', 'GYR', 'MAG','ROT', 'HEART'],
                     'mban': ['ACC', 'EMG']
 }
 
-SUBJECT_FOLDER_PATH = "G:\\Backup PrevOccupAI data\\jan2023\\data\\group1\\sensors\\LIBPhys #005\\2022-05-02"
+SUBJECT_FOLDER_PATH = "D:\\Backup PrevOccupAI data\\jan2023\\data\\group1\\sensors\\LIBPhys #005\\2022-05-02"
 FOLDER_NAME='2022-07-04'
-FOLDER_PATH = "G:\\Backup PrevOccupAI data\\jan2023\\data\\group1\\sensors"
+FOLDER_PATH = "D:\\Backup PrevOccupAI data\\jan2023\\data\\group1\\sensors"
 
 
 # ------------------------------------------------------------------------------------------------------------------- #

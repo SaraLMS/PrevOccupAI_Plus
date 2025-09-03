@@ -28,12 +28,11 @@ from pathlib import Path
 from typing import List, Dict
 from .meta_data import load_meta_data, get_muscleban_side
 from constants import PHONE, WATCH, MBAN, MAC_ADDRESS_PATTERN, PHONE_SENSORS, WATCH_SENSORS, MBAN_SENSORS
-from .parser import get_file_by_sensor
 
 # ------------------------------------------------------------------------------------------------------------------- #
 # file specific constants
 # ------------------------------------------------------------------------------------------------------------------- #
-MIN_KB = 1500
+MIN_BYTES = 1500
 
 # -------------------------------------------------------------------------------------------------------------------- #
 # public functions
@@ -149,41 +148,38 @@ def _get_device_files(device: str, sensor_list: List[str], folder_path: str) -> 
 def _keep_largest_file_per_acquisition(grouped_acquisitions_dict: Dict[str, List[Path]]) -> Dict[str, List[Path]]:
     """
     Keeps only the largest file for each acquisition time in the dictionary.
+    If the largest file is smaller than 1.5 KB, the acquisition is removed.
 
     :param grouped_acquisitions_dict: Dict mapping acquisition time -> list of Paths
-    :return: The same dict, with only the largest file kept per acquisition
+    :return: The same dict, with only the largest file kept per acquisition,
+             or no entry if the largest file is too small.
     """
-    # cycle though the dictionary with the acquisition times
+
+    # Store acquisition times to delete later (to avoid modifying dict while iterating)
+    to_delete = []
+
+    # Loop through each acquisition time and its associated list of file paths
     for acq_time, paths in grouped_acquisitions_dict.items():
-        size_biggest_file = 0
-        name_biggest_file = None
-        for file_path in paths:
-            file_size = file_path.stat().st_size
-            if file_size > size_biggest_file:
-                size_biggest_file = file_size
-                name_biggest_file = file_path
-        # change dict to keep only the largest file
-        grouped_acquisitions_dict[acq_time] = [name_biggest_file]
-        print(f"  Largest: {name_biggest_file} ({name_biggest_file} bytes)")
 
-        # # if path exists
-        # if paths:
-        #
-        #     # get the largest file for that acquisition time
-        #     largest = max(paths, key=lambda p: p.stat().st_size)
-        #
-        #     # change dict to keep only the largest file
-        #     grouped_acquisitions_dict[acq_time] = [largest]
+        # Ensure the list is not empty
+        if paths:
 
-        # if paths:
-        #
-        #
-        #     print(f"Files for {acq_time}:")
-        #     for p in paths:
-        #         print(f"  {p}: {p.stat().st_size} bytes")
-        #     largest = max(paths, key=lambda p: p.stat().st_size)
-        #     print(f"  Largest: {largest} ({largest.stat().st_size} bytes)")
-        #     grouped_acquisitions_dict[acq_time] = [largest]
+            # Find the file with the largest size
+            largest = max(paths, key=lambda p: p.stat().st_size)
+
+            # Check if the largest file is >= MIN_BYTES
+            if largest.stat().st_size >= MIN_BYTES:
+
+                # Keep only the largest file
+                grouped_acquisitions_dict[acq_time] = [largest]
+            else:
+                # Mark acquisition for deletion if largest file is too small
+                to_delete.append(acq_time)
+
+    # Remove acquisitions where the biggest file in < MIN_BYTES
+    for acq_time in to_delete:
+        del grouped_acquisitions_dict[acq_time]
+
     return grouped_acquisitions_dict
 
 
@@ -272,36 +268,33 @@ def _get_android_filepaths(device_name: str, sensor_list: List[str], folder_path
     :param folder_path: Root folder containing all device acquisition data.
     :return: List with the Paths
     """
-    # inform user
-    print("Finding {} files in subfolders of {}...".format(device_name, folder_path))
 
     # check which regular expression to search for given the device
     if device_name == PHONE:
 
         # check for the string ANDROID but can not have WEAR
         files = [file for file in Path(folder_path).resolve().glob("**/*ANDROID*") if "WEAR" not in file.name
-                 and file.stat().st_size >= MIN_KB]
+                 and file.stat().st_size >= MIN_BYTES]
 
     else:
 
         # check for the string ANDROID but can not have WEAR
-        files = [file for file in Path(folder_path).resolve().glob("**/*WEAR*") if file.stat().st_size >= MIN_KB]
+        files = [file for file in Path(folder_path).resolve().glob("**/*WEAR*") if file.stat().st_size >= MIN_BYTES]
 
     # get only the files from the sensors in sensor_list
     if sensor_list:
 
-        # innit list for holding the sensor files
+        # init list for holding the sensor files
         selected_files = []
 
         # cycle over the input sensor list
         for sensor in sensor_list:
 
-            # get the file path correspondent to the sensor
-            file = get_file_by_sensor(sensor, files)
+            # collect all files that correspond to this sensor
+            sensor_files = [f for f in files if sensor in f.name]
 
-            # add path if it was found
-            if file:
-                selected_files.append(file)
+            # add them if any found
+            selected_files.extend(sensor_files)
 
         return selected_files
 
@@ -315,8 +308,6 @@ def _get_mban_files(folder_path: str) -> List[Path]:
     :param folder_path: Root folder containing all device acquisition data.
     :return: List with the paths
     """
-    # inform user
-    print("Finding {} files in subfolders of {}...".format(MBAN, folder_path))
 
     # get regex
     pattern = re.compile(MAC_ADDRESS_PATTERN)
