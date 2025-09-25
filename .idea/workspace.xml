@@ -4,11 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="d6637f5a-b481-472e-9cbc-1b523cdb0fbc" name="Changes" comment="fixed multiple bugs: logic to get only the sensor files selected by the user; pop acquisition times from the dictionary when the muscleBAN file size is too small; and fixed rounding error.">
+    <list default="true" id="d6637f5a-b481-472e-9cbc-1b523cdb0fbc" name="Changes" comment="minor changes and added missing documentation">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/load/interpolate.py" beforeDir="false" afterPath="$PROJECT_DIR$/load/interpolate.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/load/raw_data_loader.py" beforeDir="false" afterPath="$PROJECT_DIR$/load/raw_data_loader.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -98,13 +96,22 @@
       <option name="project" value="LOCAL" />
       <updated>1756904036298</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="minor changes and added missing documentation">
+      <option name="closed" value="true" />
+      <created>1756917443601</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1756917443601</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="implemented logic to handle the input sensor paths" />
     <MESSAGE value="added checks for the loaded sensors and file paths - finishes path_handler" />
     <MESSAGE value="fixed multiple bugs: logic to get only the sensor files selected by the user; pop acquisition times from the dictionary when the muscleBAN file size is too small; and fixed rounding error." />
-    <option name="LAST_COMMIT_MESSAGE" value="fixed multiple bugs: logic to get only the sensor files selected by the user; pop acquisition times from the dictionary when the muscleBAN file size is too small; and fixed rounding error." />
+    <MESSAGE value="minor changes and added missing documentation" />
+    <option name="LAST_COMMIT_MESSAGE" value="minor changes and added missing documentation" />
   </component>
 </project>

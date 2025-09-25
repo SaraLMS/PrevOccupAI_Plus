@@ -224,7 +224,6 @@ def interpolate_heart_rate_sensor(sensor_df: pd.DataFrame, fs: int = 100) -> pd.
     return interpolated_df
 
 
-
 def resample_signals(sensor_df: pd.DataFrame, fs, fs_new) -> pd.DataFrame:
     """
     Function to resample signals using polyphase filtering. If fs_new > fs, the function upsamples the signal.
