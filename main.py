@@ -2,7 +2,7 @@
 # imports
 # ------------------------------------------------------------------------------------------------------------------- #
 from load.raw_data_loader import load_daily_acquisitions
-
+from signal_processing.pre_process import apply_pre_processing_pipeline
 # ------------------------------------------------------------------------------------------------------------------- #
 # constants
 # ------------------------------------------------------------------------------------------------------------------- #
@@ -20,4 +20,6 @@ if __name__ == '__main__':
     if LOAD_DAILY_ACQUISITIONS:
 
         # load all acquisitions from the same day into a nested dictionary
-        paths_dict = load_daily_acquisitions(DAILY_FOLDER_PATH, SELECTED_SENSORS)
+        df_dict = load_daily_acquisitions(DAILY_FOLDER_PATH, SELECTED_SENSORS)
+
+        processed_df_dict = apply_pre_processing_pipeline(df_dict, fs_android=100)
