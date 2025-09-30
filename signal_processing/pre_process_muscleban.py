@@ -1,3 +1,17 @@
+"""
+Functions to preprocess MuscleBAN sensor data, including applying transfer functions and resampling signals.
+
+Available Functions
+-------------------
+[Public]
+apply_transfer_functions(...): Applies transfer functions to accelerometer data and EMG data from the muscleBAN.
+resample_signals(...): Resamples all sensor signals to a new sampling frequency using polyphase filtering.
+-------------------
+[Private]
+_emg_transfer_function(...): Converts raw EMG ADC values to millivolts.
+_acc_transfer_function(...): Converts raw accelerometer ADC values to m/s².
+_generate_time_column_from_samples(...): Generates a time axis in seconds based on the number of samples and sampling frequency.
+"""
 # ------------------------------------------------------------------------------------------------------------------- #
 # imports
 # ------------------------------------------------------------------------------------------------------------------- #
@@ -45,9 +59,6 @@ def apply_transfer_functions(muscleban_df: pd.DataFrame) -> pd.DataFrame:
             # apply EMG transfer function
             processed_df[column] = _emg_transfer_function(processed_df[column])
 
-        # if it is 'nseq' column, ignore
-        continue
-
     return processed_df
 
 
@@ -56,7 +67,7 @@ def resample_signals(sensor_df: pd.DataFrame, fs: int, fs_new: int) -> pd.DataFr
     Function to resample signals using polyphase filtering. If fs_new > fs, the function upsamples the signal.
     If fs_new < fs, this function downsamples the signals. This function also generates a time axis in seconds based
     on the length of the signals and on the new sampling frequency. The first column of sensor_df is considered to be
-    a time-axis (or a index column) and the remaining columns are considered signals.
+    a time-axis (or an index column) and the remaining columns are considered signals.
 
     :param sensor_df: A DataFrame containing timestamps or indices in first column and sensor data in the remaining columns.
     :param fs: The original sampling frequency.
@@ -133,7 +144,14 @@ def _acc_transfer_function(acc_series: pd.Series) -> pd.Series:
     return acc_series
 
 
-def _generate_time_column_from_samples(signal_size:int, fs: int):
+def _generate_time_column_from_samples(signal_size: int, fs: int) -> np.ndarray:
+    """
+    Generates a time axis in seconds based on the number of samples and sampling frequency.
+
+    :param signal_size: size of the signal in samples
+    :param fs: the sampling frequency of the signal in Hz
+    :return: The generated time axis
+    """
 
     # get time (seconds) between each sample
     delta_t = 1/fs

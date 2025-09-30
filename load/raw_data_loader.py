@@ -70,7 +70,8 @@ def load_daily_acquisitions(folder_path: str, load_devices: Dict[str, List[str]]
     'mBAN_right: {'10-00-00': df, '11-20-00': df, '12-00-00': df, '15-40-00': df}
     }
 
-    Print a report for the user to which devices and sensors were loaded to be informed of any missing data/acquisitions.
+    For the time column is set as the index for all dataframes.
+    Prints a report for the user to which devices and sensors were loaded to be informed of any missing data/acquisitions.
 
     :param folder_path: Path to the folder containing the data of an entire day of acquisitions.
     :param load_devices: Dictionary with the devices and sensors to be loaded. (e.g.: {phone: [ACC, GYR, MAG], watch: [ACC]}

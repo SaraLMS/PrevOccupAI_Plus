@@ -37,6 +37,13 @@ VALID_SENSORS = [ACC, GYR, MAG, ROT]
 
 def apply_pre_processing_pipeline(daily_data_dict: Dict[str, Dict[str, pd.DataFrame]], fs_android: int = 100,
                                   downsample_muscleban: bool = True) -> Dict[str, Dict[str, pd.DataFrame]]:
+    """
+
+    :param daily_data_dict:
+    :param fs_android:
+    :param downsample_muscleban:
+    :return:
+    """
 
     # make a copy to not overwrite the original dictionary
     processed_dict = copy.deepcopy(daily_data_dict)
