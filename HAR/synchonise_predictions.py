@@ -1,0 +1,115 @@
+# ------------------------------------------------------------------------------------------------------------------- #
+# imports
+# ------------------------------------------------------------------------------------------------------------------- #
+import pandas as pd
+import copy
+
+# internal imports
+from .classifier import classify_human_activities
+from constants import PHONE, WATCH, MBAN_LEFT, MBAN_RIGHT
+
+# ------------------------------------------------------------------------------------------------------------------- #
+# constants
+# ------------------------------------------------------------------------------------------------------------------- #
+
+WATCH_SUFFIX = '_WEAR'
+MBAN_L_SUFFIX = '_MBAN_L'
+MBAN_R_SUFFIX = '_MBAN_R'
+
+# ------------------------------------------------------------------------------------------------------------------- #
+# public functions
+# ------------------------------------------------------------------------------------------------------------------- #
+
+def synchronise_predictions(daily_data_dict, w_size: float = 5.0, fs: int = 100) -> pd.DataFrame:
+    """
+
+    :param daily_data_dict:
+    :param w_size:
+    :param fs:
+    :return:
+    """
+
+    # create copy of the nested dictionary to avoid overwriting
+    classified_data_dict = copy.deepcopy(daily_data_dict)
+
+    # if no phone data was loaded raise exception
+    if PHONE not in daily_data_dict.keys():
+        raise KeyError(f"Key '{PHONE}' not found in dictionary. Load smartphone data to classify the activities.")
+
+    # classify human activities using only the phone
+    classified_data_dict[PHONE] = classify_human_activities(classified_data_dict[PHONE], w_size=w_size, fs=fs)
+
+    # cycle over the outer dictionary
+    for device_name, acquisitions_dict in classified_data_dict.items():
+
+        # cycle over the inner dict with the acquisition data
+        for acquisition_time, sensor_df in acquisitions_dict.items():
+
+            # add suffix to distinguish same sensors from different device
+            sensor_df = _add_suffix_to_column_name(device_name, sensor_df)
+
+            # create time column using the acquisition time and sampling frequency
+            time_col = _create_time_column_from_initial_time(acquisition_time, sensor_df.shape[0], fs)
+
+            # add time column to the sensor_df
+            sensor_df['time'] = time_col
+
+            # set time column as index
+            sensor_df = sensor_df.set_index('time')
+
+            # add replace in the dictionary
+            acquisitions_dict[acquisition_time] = sensor_df
+
+        # get list with all dataframes from the device
+        list_df = list(acquisitions_dict.values())
+
+        # concat all dataframes from the same device into one
+        classified_data_dict[device_name] = pd.concat(list_df, axis=0)
+
+    # concat all devices dataframes into one
+    list_device_df = list(classified_data_dict.values())
+
+    # concat all devices dataframes into one
+    complete_df = pd.concat(list_device_df, axis=1)
+
+    return complete_df
+
+# ------------------------------------------------------------------------------------------------------------------- #
+# public functions
+# ------------------------------------------------------------------------------------------------------------------- #
+
+def _create_time_column_from_initial_time(initial_time: str, signal_size: int, fs: int):
+
+    # Parse start time as datetime with milliseconds
+    start_time = pd.to_datetime(initial_time + '.000', format='%H-%M-%S.%f')
+
+    # Time step
+    dt = 1 / fs  # seconds
+
+    # Generate DatetimeIndex
+    time_index = pd.date_range(start=start_time, periods=signal_size, freq=pd.Timedelta(seconds=dt))
+
+    # Convert to string 'HH:MM:SS.sss'
+    time_series = pd.Series([t.strftime('%H:%M:%S.%f')[:-3] for t in time_index])
+
+    return time_series
+
+
+def _add_suffix_to_column_name(device_name: str, df: pd.DataFrame) -> pd.DataFrame:
+    """
+    Add suffixes to the column names to differentiate the same sensors from different devices
+    :param device_name: Name of the device
+    :param df: pandas dataframe with the signal pertaining for that device
+    :return: the dataframe with the added suffixes
+    """
+
+    if device_name == WATCH:
+        return df.add_suffix(WATCH_SUFFIX)
+
+    elif device_name == MBAN_LEFT:
+        return df.add_suffix(MBAN_L_SUFFIX)
+
+    elif device_name == MBAN_RIGHT:
+        return df.add_suffix(MBAN_R_SUFFIX)
+    else:
+        return df

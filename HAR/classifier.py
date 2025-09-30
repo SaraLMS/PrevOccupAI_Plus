@@ -5,9 +5,9 @@ Available Functions
 -------------------
 [Public]
 classify_human_activities(...): Classifies human activities from smartphone sensor data.
-apply_classification_pipeline(...): Applies the full classification pipeline, including threshold tuning and heuristics-based label correction.
 -------------------
 [Private]
+_apply_classification_pipeline(...): Applies the full classification pipeline, including threshold tuning and heuristics-based label correction.
 _threshold_tuning(...): Adjusts model predictions to reduce confusion between 'stand' and 'sit' based on a probability threshold.
 _heuristics_correction(...): Post-processes predicted labels to correct short-duration segments.
 _expand_classification(...): Expands windowed predictions to match the original signal length.
@@ -78,8 +78,8 @@ def classify_human_activities(phone_data_dict: Dict[str, pd.DataFrame], w_size: 
             raise ValueError(f"Missing required features for the model: {missing_features}. ")
 
         # classify activities
-        _, y_pred_exp = apply_classification_pipeline(features_df[model_features], model, w_size=w_size, fs=fs,
-                                                           threshold=PROB_THRESHOLD, min_durations=MIN_DURATIONS)
+        _, y_pred_exp = _apply_classification_pipeline(features_df[model_features], model, w_size=w_size, fs=fs,
+                                                       threshold=PROB_THRESHOLD, min_durations=MIN_DURATIONS)
 
         # trim df with the phone signals to add the prediction column
         sensor_data, _ = trim_data(df.to_numpy(), w_size=w_size, fs=fs)
@@ -96,8 +96,11 @@ def classify_human_activities(phone_data_dict: Dict[str, pd.DataFrame], w_size: 
     return classified_dict
 
 
-def apply_classification_pipeline(features: np.ndarray, har_model: RandomForestClassifier, w_size: float,
-                                  fs: int, threshold: float, min_durations: Dict[int, int]) -> Tuple[np.ndarray, List[int]]:
+# ------------------------------------------------------------------------------------------------------------------- #
+# private functions
+# ------------------------------------------------------------------------------------------------------------------- #
+def _apply_classification_pipeline(features: np.ndarray, har_model: RandomForestClassifier, w_size: float,
+                                   fs: int, threshold: float, min_durations: Dict[int, int]) -> Tuple[np.ndarray, List[int]]:
     """
     Applies classification pipeline. The classification pipeline consists of:
 
@@ -133,10 +136,6 @@ def apply_classification_pipeline(features: np.ndarray, har_model: RandomForestC
 
     return y_pred_tt_heur, y_pred_tt_heur_expanded
 
-
-# ------------------------------------------------------------------------------------------------------------------- #
-# private functions
-# ------------------------------------------------------------------------------------------------------------------- #
 
 def _threshold_tuning(probabilities: np.ndarray, y_pred: Union[np.ndarray, list],
                      sit_label: int = 0, stand_label: int = 1, threshold: float = 0.1) -> np.ndarray:
