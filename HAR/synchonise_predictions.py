@@ -2,7 +2,7 @@
 # imports
 # ------------------------------------------------------------------------------------------------------------------- #
 import pandas as pd
-import copy
+from typing import Dict, Union
 
 # internal imports
 from .classifier import classify_human_activities
@@ -20,27 +20,35 @@ MBAN_R_SUFFIX = '_MBAN_R'
 # public functions
 # ------------------------------------------------------------------------------------------------------------------- #
 
-def synchronise_predictions(daily_data_dict, w_size: float = 5.0, fs: int = 100) -> pd.DataFrame:
+def classify_synchronise_predictions(daily_data_dict: Dict[str, Dict[str, pd.DataFrame]], w_size: float = 5.0,
+                                     fs: int = 100) -> pd.DataFrame:
+    """
+    Classify and synchronise activity predictions across multiple devices.
+
+    This function takes a nested dictionary of daily sensor acquisitions
+    (e.g., 'phone': {'09:45:00': pd.DataFrame} , 'watch': {'10:45:00': pd.DataFrame, '11:30:00': pd.DataFrame}),
+    classifies human activities using the smartphone data, and then synchronises the predictions across all devices,
+    using a sliding window approach.
+
+    :param daily_data_dict: a nested dictionary with the following format: {device_name : {acquisition_time: pd.DataFrame}}
+                            (e.g., 'phone': {'09:45:00': pd.DataFrame} , 'watch': {'10:45:00': pd.DataFrame, '11:30:00': pd.DataFrame})
+    :param w_size: the window size in seconds that should be used for windowing the data
+    :param fs: the sampling rate (in Hz) of the data
+    :return: a dataframe with all synchronised signals
     """
 
-    :param daily_data_dict:
-    :param w_size:
-    :param fs:
-    :return:
-    """
-
-    # create copy of the nested dictionary to avoid overwriting
-    classified_data_dict = copy.deepcopy(daily_data_dict)
+    # innit dict for holding the data with the new time columns
+    classified_data_dict = {}
 
     # if no phone data was loaded raise exception
     if PHONE not in daily_data_dict.keys():
         raise KeyError(f"Key '{PHONE}' not found in dictionary. Load smartphone data to classify the activities.")
 
     # classify human activities using only the phone
-    classified_data_dict[PHONE] = classify_human_activities(classified_data_dict[PHONE], w_size=w_size, fs=fs)
+    classified_data_dict[PHONE] = classify_human_activities(daily_data_dict[PHONE], w_size=w_size, fs=fs)
 
     # cycle over the outer dictionary
-    for device_name, acquisitions_dict in classified_data_dict.items():
+    for device_name, acquisitions_dict in daily_data_dict.items():
 
         # cycle over the inner dict with the acquisition data
         for acquisition_time, sensor_df in acquisitions_dict.items():
@@ -78,13 +86,25 @@ def synchronise_predictions(daily_data_dict, w_size: float = 5.0, fs: int = 100)
 # public functions
 # ------------------------------------------------------------------------------------------------------------------- #
 
-def _create_time_column_from_initial_time(initial_time: str, signal_size: int, fs: int):
+def _create_time_column_from_initial_time(initial_time: str, signal_size: int, fs: int) -> pd.Series:
+    """
+    Generate a time column, starting from a given clock time.
+
+    This function creates a sequence of times in the format "HH:MM:SS.sss"
+    (hours, minutes, seconds, milliseconds) sampled at a specified frequency.
+    The time column is returned as a pandas Series of strings.
+
+    :param initial_time: The starting time of the sequence, in the format "HH-MM-SS" (e.g., "10-30-00").
+    :param signal_size: The number of time samples to generate
+    :param fs: The sampling frequency in Hz. The interval between consecutive times is computed as 1/fs.
+    :return: The generate time column
+    """
 
     # Parse start time as datetime with milliseconds
     start_time = pd.to_datetime(initial_time + '.000', format='%H-%M-%S.%f')
 
-    # Time step
-    dt = 1 / fs  # seconds
+    # delta t in seconds
+    dt = 1 / fs
 
     # Generate DatetimeIndex
     time_index = pd.date_range(start=start_time, periods=signal_size, freq=pd.Timedelta(seconds=dt))

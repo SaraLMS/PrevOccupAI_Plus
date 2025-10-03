@@ -38,11 +38,17 @@ VALID_SENSORS = [ACC, GYR, MAG, ROT]
 def apply_pre_processing_pipeline(daily_data_dict: Dict[str, Dict[str, pd.DataFrame]], fs_android: int = 100,
                                   downsample_muscleban: bool = True) -> Dict[str, Dict[str, pd.DataFrame]]:
     """
+    This function pre-processes the inertial sensor data from the smartwatch and smartphone devices. For the muscleban,
+    this function applies the transfer functions for the EMG and ACC, filters the EMG, and downsamples the muscleban
+    signals if downsample_muscleban is set to True.
 
-    :param daily_data_dict:
-    :param fs_android:
-    :param downsample_muscleban:
-    :return:
+    :param daily_data_dict: a nested dictionary with the following format: {device_name : {acquisition_time: pd.DataFrame}}
+                            (e.g., 'phone': {'09:45:00': pd.DataFrame} , 'watch': {'10:45:00': pd.DataFrame, '11:30:00': pd.DataFrame})
+    :param fs_android: the sampling rate (in Hz) of the data from the smart devices. This is also the sampling frequency which
+                        the muscleban signal will be downsampled to. Default = 100.
+    :param downsample_muscleban: bool. If true, muscleban signals are downsampled, if not, these keep the original sampling
+                                frequency
+    :return: a nested dictionary with the same format as the input one, but with the preprocessed signals.
     """
 
     # make a copy to not overwrite the original dictionary
@@ -103,10 +109,6 @@ def _pre_process_signals(subject_data: pd.DataFrame, fs: int) -> pd.DataFrame:
 
     # remove impulse response
     sensor_data = sensor_data[250:, :]
-
-    # TODO don't forget to add the trimming only when windowing, here it's just pre-processing. dont remove time column here
-    # # trim the data to accommodate full windowing
-    # sensor_data, to_trim = trim_data(sensor_data, w_size=w_size, fs=fs)
 
     # transform back to dataframe for easier handling of the data
     sensor_data = pd.DataFrame(sensor_data, columns=sensor_names)
