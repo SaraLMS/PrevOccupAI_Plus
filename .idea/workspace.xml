@@ -4,12 +4,13 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="d6637f5a-b481-472e-9cbc-1b523cdb0fbc" name="Changes" comment="implemented the synchronisation of the predictions">
+    <list default="true" id="d6637f5a-b481-472e-9cbc-1b523cdb0fbc" name="Changes" comment="added missing documentation">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/HAR/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/HAR/__init__.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/HAR/synchonise_predictions.py" beforeDir="false" afterPath="$PROJECT_DIR$/HAR/synchonise_predictions.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/signal_processing/pre_process.py" beforeDir="false" afterPath="$PROJECT_DIR$/signal_processing/pre_process.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/signal_processing/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/signal_processing/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/signal_processing/pre_process.py" beforeDir="false" afterPath="$PROJECT_DIR$/signal_processing/pre_process_android.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -49,7 +50,7 @@
   <component name="PropertiesComponent">{
   &quot;keyToString&quot;: {
     &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
-    &quot;Python.main.executor&quot;: &quot;Debug&quot;,
+    &quot;Python.main.executor&quot;: &quot;Run&quot;,
     &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
     &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
     &quot;git-widget-placeholder&quot;: &quot;master&quot;
@@ -177,7 +178,15 @@
       <option name="project" value="LOCAL" />
       <updated>1759256047993</updated>
     </task>
-    <option name="localTasksCounter" value="10" />
+    <task id="LOCAL-00010" summary="added missing documentation">
+      <option name="closed" value="true" />
+      <created>1759518544463</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1759518544463</updated>
+    </task>
+    <option name="localTasksCounter" value="11" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
@@ -189,17 +198,7 @@
     <MESSAGE value="implemented signal_processing pipeline" />
     <MESSAGE value="implemented classification pipeline and added missing documentation and init files" />
     <MESSAGE value="implemented the synchronisation of the predictions" />
-    <option name="LAST_COMMIT_MESSAGE" value="implemented the synchronisation of the predictions" />
-  </component>
-  <component name="XDebuggerManager">
-    <breakpoint-manager>
-      <breakpoints>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/HAR/synchonise_predictions.py</url>
-          <line>82</line>
-          <option name="timeStamp" value="1" />
-        </line-breakpoint>
-      </breakpoints>
-    </breakpoint-manager>
+    <MESSAGE value="added missing documentation" />
+    <option name="LAST_COMMIT_MESSAGE" value="added missing documentation" />
   </component>
 </project>

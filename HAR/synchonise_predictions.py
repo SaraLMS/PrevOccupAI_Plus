@@ -4,6 +4,7 @@
 import pandas as pd
 from typing import Dict, Union
 
+
 # internal imports
 from .classifier import classify_human_activities
 from constants import PHONE, WATCH, MBAN_LEFT, MBAN_RIGHT
@@ -20,8 +21,8 @@ MBAN_R_SUFFIX = '_MBAN_R'
 # public functions
 # ------------------------------------------------------------------------------------------------------------------- #
 
-def classify_synchronise_predictions(daily_data_dict: Dict[str, Dict[str, pd.DataFrame]], w_size: float = 5.0,
-                                     fs: int = 100) -> pd.DataFrame:
+def classify_and_synchronise_predictions(daily_data_dict: Dict[str, Dict[str, pd.DataFrame]], w_size: float = 5.0,
+                                         fs: int = 100) -> pd.DataFrame:
     """
     Classify and synchronise activity predictions across multiple devices.
 
