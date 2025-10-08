@@ -3,6 +3,7 @@
 # ------------------------------------------------------------------------------------------------------------------- #
 import pandas as pd
 from typing import Dict, Union
+import copy
 
 
 # internal imports
@@ -37,19 +38,17 @@ def classify_and_synchronise_predictions(daily_data_dict: Dict[str, Dict[str, pd
     :param fs: the sampling rate (in Hz) of the data
     :return: a dataframe with all synchronised signals
     """
-
-    # innit dict for holding the data with the new time columns
-    classified_data_dict = {}
+    daily_dict = copy.deepcopy(daily_data_dict)
 
     # if no phone data was loaded raise exception
     if PHONE not in daily_data_dict.keys():
         raise KeyError(f"Key '{PHONE}' not found in dictionary. Load smartphone data to classify the activities.")
 
     # classify human activities using only the phone
-    classified_data_dict[PHONE] = classify_human_activities(daily_data_dict[PHONE], w_size=w_size, fs=fs)
+    daily_dict[PHONE] = classify_human_activities(daily_data_dict[PHONE], w_size=w_size, fs=fs)
 
     # cycle over the outer dictionary
-    for device_name, acquisitions_dict in daily_data_dict.items():
+    for device_name, acquisitions_dict in daily_dict.items():
 
         # cycle over the inner dict with the acquisition data
         for acquisition_time, sensor_df in acquisitions_dict.items():
@@ -73,10 +72,10 @@ def classify_and_synchronise_predictions(daily_data_dict: Dict[str, Dict[str, pd
         list_df = list(acquisitions_dict.values())
 
         # concat all dataframes from the same device into one
-        classified_data_dict[device_name] = pd.concat(list_df, axis=0)
+        daily_dict[device_name] = pd.concat(list_df, axis=0)
 
     # concat all devices dataframes into one
-    list_device_df = list(classified_data_dict.values())
+    list_device_df = list(daily_dict.values())
 
     # concat all devices dataframes into one
     complete_df = pd.concat(list_device_df, axis=1)

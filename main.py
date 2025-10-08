@@ -11,8 +11,8 @@ import matplotlib.pyplot as plt
 # constants
 # ------------------------------------------------------------------------------------------------------------------- #
 LOAD_DAILY_ACQUISITIONS = True
-SELECTED_SENSORS = {'phone': ['ACC', 'GYR', 'MAG', 'ROT', 'NOISE'],
-                    'watch': ['ACC', 'GYR', 'MAG']}
+SELECTED_SENSORS = {'phone': ['ACC', 'GYR', 'MAG'],
+                    'watch': ['ACC']}
 DAILY_FOLDER_PATH = "D:\\Backup PrevOccupAI data\\jan2023\\data\\group2\\sensors\\LIBPhys #003\\2022-06-21"
 W_SIZE = 5.0
 FS = 100
@@ -37,8 +37,8 @@ def main(classify_and_sync=True):
         print(sync_df.columns)
         # Line plot
         plt.figure(figsize=(8, 5))
-        plt.plot(sync_df['x_ACC'], label='x_ACC')
-        plt.plot(sync_df['x_ACC_WEAR'], label='x_ACC_WEAR')
+        plt.plot(sync_df['x_ACC'].iloc[::10], label='x_ACC')
+        plt.plot(sync_df['x_ACC_WEAR'].iloc[::10], label='x_ACC_WEAR')
         plt.xlabel('Index')
         plt.ylabel('Values')
         plt.title('x_ACC vs x_ACC_WEAR')
