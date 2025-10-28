@@ -1,5 +1,5 @@
 """
-Functions to load, filter, and organize sensor acquisition file paths from multiple devices.
+Functions to load_signals, filter, and organize sensor acquisition file paths from multiple devices.
 
 Available Functions
 -------------------
@@ -46,7 +46,7 @@ def get_sensor_paths_per_device(folder_path: str, load_devices: Dict[str, List[s
       (1). Load all file paths from the input `folder_path`, grouped by device type.
 
          - For phone and watch devices, loads only the sensors defined in load_devices.
-         - For MBAN devices, load all MBAN files (from both left and right mbans).
+         - For MBAN devices, load_signals all MBAN files (from both left and right mbans).
 
       (1.1). If MBAN is to be loaded, split its files into separate sides ('mban_left', 'mban_right').
 
@@ -83,7 +83,7 @@ def get_sensor_paths_per_device(folder_path: str, load_devices: Dict[str, List[s
     # check load_devices
     _validate_load_devices(load_devices)
 
-    # (1) load all files from all daily acquisitions per device into a dictionary
+    # (1) load_signals all files from all daily acquisitions per device into a dictionary
     for device, sensor_list in load_devices.items():
 
         # get paths per device - paths_dict = {phone: List(Path), watch: List(Path), mban: List(Path)}
@@ -127,7 +127,7 @@ def _get_device_files(device: str, sensor_list: List[str], folder_path: str) -> 
     in the same file. This is handled when loading the data into pandas dataframes
 
     :param device: str pertaining to the device name. Supported devices: 'phone', 'watch', 'mban'
-    :param sensor_list: list of sensors to load for each device. Supported sensors per device:
+    :param sensor_list: list of sensors to load_signals for each device. Supported sensors per device:
                         phone: [ACC, GYR, MAG, ROT, NOISE]
                         watch: [ACC, GYR, MAG, ROT, HR]
                         mban: [ACC, EMG]
@@ -141,7 +141,7 @@ def _get_device_files(device: str, sensor_list: List[str], folder_path: str) -> 
 
     else:
 
-        # if device is mban, load all muscleban paths (both left and right) found into a list
+        # if device is mban, load_signals all muscleban paths (both left and right) found into a list
         return _get_mban_files(folder_path)
 
 
@@ -240,7 +240,7 @@ def _group_mban_files(paths_dict: Dict[str, List[Path]]) -> Dict[str, List[Path]
         # (2) match the mac address pattern in the mban files
         match = pattern.search(str(file))
 
-        # load metadata
+        # load_signals metadata
         meta_data_df = load_meta_data()
 
         # (3) get muscleban side based on the unique mac address
@@ -298,7 +298,7 @@ def _get_android_filepaths(device_name: str, sensor_list: List[str], folder_path
 
         return selected_files
 
-    # if sensor_list is empty, load all sensors
+    # if sensor_list is empty, load_signals all sensors
     return files
 
 

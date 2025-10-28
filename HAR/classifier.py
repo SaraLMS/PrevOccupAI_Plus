@@ -69,7 +69,7 @@ def classify_human_activities(phone_data_dict: Dict[str, pd.DataFrame], w_size: 
         # extract features using TSFEL
         features_df = extract_features(df, sensors_to_load=SENSORS_TO_LOAD,w_size=w_size, fs=fs)
 
-        # load the model
+        # load_signals the model
         model, model_features = load_production_model(os.path.join(Path(__file__).parent, HAR_MODEL))
 
         # check if there are any missing features required for the classifier

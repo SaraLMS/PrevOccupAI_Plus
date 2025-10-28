@@ -1,5 +1,5 @@
 """
-Functions to load raw sensor data
+Functions to load_signals raw sensor data
 
 Available Functions
 -------------------
@@ -113,7 +113,7 @@ def load_daily_acquisitions(folder_path: str, load_devices: Dict[str, List[str]]
                     sensor_list_mban = load_devices[MBAN]
 
                     # muscleBAN only has one file per acquisition
-                    # load muscleBAN data - only the sensors defined in load_devices
+                    # load_signals muscleBAN data - only the sensors defined in load_devices
                     muscleban_sensor_data = _load_muscleban_data(paths_list[0], sensor_list_mban)
 
                     # add to dictionary
@@ -122,7 +122,7 @@ def load_daily_acquisitions(folder_path: str, load_devices: Dict[str, List[str]]
                 # if its android device
                 else:
 
-                    # load the data
+                    # load_signals the data
                     sensor_data, report = _load_raw_data(paths_list)
 
                     # align the data
@@ -184,7 +184,7 @@ def _load_raw_data(sensor_paths_list: List[Path]) -> Tuple[List[pd.DataFrame], D
 
         if sensor_name:
 
-            # load the data
+            # load_signals the data
             sensor_df = _load_sensor_file(sensor_path, sensor_name)
 
             # append the data to sensor_data
@@ -491,7 +491,7 @@ def _load_muscleban_data(file_path: Path, sensor_list: List[str]) -> pd.DataFram
     # inform user
     print(f"\nLoading muscleBAN data from file: {file_path.name}.")
 
-    # load data into a csv file
+    # load_signals data into a csv file
     sensor_df = pd.read_csv(file_path, delimiter = '\t', header=None, skiprows=3)
 
     # remove Nan column that is generated when using pd.read_csv

@@ -1,5 +1,5 @@
 """
-Functions to load JSON configuration files and trained machine learning models for HAR.
+Functions to load_signals JSON configuration files and trained machine learning models for HAR.
 
 Available Functions
 -------------------
@@ -14,8 +14,7 @@ None
 # ------------------------------------------------------------------------------------------------------------------- #
 # imports
 # ------------------------------------------------------------------------------------------------------------------- #
-import json
-from typing import Dict, Any, Tuple, List
+from typing import Tuple, List
 import joblib
 from sklearn.ensemble import RandomForestClassifier
 
@@ -23,29 +22,13 @@ from sklearn.ensemble import RandomForestClassifier
 # public functions
 # ------------------------------------------------------------------------------------------------------------------- #
 
-def load_json_file(json_path: str) -> Dict[Any, Any]:
-    """
-    Loads a json file.
-    :param json_path: str
-        Path to the json file
-    :return: Dict[Any,Any]
-    Dictionary containing the features from TSFEL
-    """
-
-    # read json file to a features dict
-    with open(json_path, "r") as file:
-        json_dict = json.load(file)
-
-    return json_dict
-
-
 def load_production_model(model_path: str) -> Tuple[RandomForestClassifier, List[str]]:
     """
     Loads the production model
     :param model_path: path o the model
     :return: a tuple containing the model and the list of features used
     """
-    # load the classifier
+    # load_signals the classifier
     har_model = joblib.load(model_path)
 
     # print model name

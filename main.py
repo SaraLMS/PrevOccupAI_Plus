@@ -1,7 +1,7 @@
 # ------------------------------------------------------------------------------------------------------------------- #
 # imports
 # ------------------------------------------------------------------------------------------------------------------- #
-import load
+import load_signals
 import signal_processing
 import HAR
 
@@ -25,8 +25,8 @@ def main(classify_and_sync=True):
 
     if classify_and_sync:
 
-        # load all acquisitions from the same day into a nested dictionary
-        df_dict = load.load_daily_acquisitions(DAILY_FOLDER_PATH, SELECTED_SENSORS)
+        # load_signals all acquisitions from the same day into a nested dictionary
+        df_dict = load_signals.load_daily_acquisitions(DAILY_FOLDER_PATH, SELECTED_SENSORS)
 
         # pre-process data
         processed_df_dict = signal_processing.apply_pre_processing_pipeline(df_dict, fs_android=FS, downsample_muscleban=True)
@@ -34,17 +34,17 @@ def main(classify_and_sync=True):
         # classify and synchronise predictions
         sync_df = HAR.classify_and_synchronise_predictions(processed_df_dict, w_size=W_SIZE, fs=FS)
 
-        print(sync_df.columns)
-        # Line plot
-        plt.figure(figsize=(8, 5))
-        plt.plot(sync_df['x_ACC'].iloc[::10], label='x_ACC')
-        plt.plot(sync_df['x_ACC_WEAR'].iloc[::10], label='x_ACC_WEAR')
-        plt.xlabel('Index')
-        plt.ylabel('Values')
-        plt.title('x_ACC vs x_ACC_WEAR')
-        plt.legend()
-        plt.grid(True)
-        plt.show()
+        # print(sync_df.columns)
+        # # Line plot
+        # plt.figure(figsize=(8, 5))
+        # plt.plot(sync_df['x_ACC'].iloc[::10], label='x_ACC')
+        # plt.plot(sync_df['x_ACC_WEAR'].iloc[::10], label='x_ACC_WEAR')
+        # plt.xlabel('Index')
+        # plt.ylabel('Values')
+        # plt.title('x_ACC vs x_ACC_WEAR')
+        # plt.legend()
+        # plt.grid(True)
+        # plt.show()
 
 if __name__ == '__main__':
 

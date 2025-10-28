@@ -22,7 +22,7 @@ import os
 from pathlib import Path
 
 # internal imports
-from .load import load_json_file
+from utils import load_json_file
 
 # ------------------------------------------------------------------------------------------------------------------- #
 # constants

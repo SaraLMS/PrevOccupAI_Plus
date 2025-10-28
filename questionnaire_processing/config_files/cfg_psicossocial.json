@@ -1,0 +1,177 @@
+{
+    "Exigências Laborais": {
+        "id": "787976",
+        "topics": {
+            "freqExigencias": {
+                "S1": {
+                    "name": "Exigências Quantitativas",
+                    "type": "likert"
+                },
+                "S2": {
+                    "name": "Ritmo de Trabalho",
+                    "type": "likert"
+                },
+                "S3": {
+                    "name": "Exigências Cognitivas",
+                    "type": "likert"
+                },
+                "S4": {
+                    "name": "Exigências Emocionais",
+                    "type": "likert"
+                }
+            },
+            "freqPausas": {
+                "S1": {
+                    "name": "Autonomia",
+                    "type": "likert"
+                },
+                "S2": {
+                    "name": "Qualidade das Pausas",
+                    "type": "likert"
+                }
+            }
+        }
+    },
+    "Organização do Trabalho e Conteúdo": {
+        "id": "791291",
+        "topics": {
+            "freqOrganizacaoTC": {
+                "S1": {
+                    "name": "Influência no Trabalho",
+                    "type": "likert"
+                },
+                "S2": {
+                    "name": "Possibilidades de Desenvolvimento",
+                    "type": "likert"
+                },
+                "S3": {
+                    "name": "Significado do Trabalho",
+                    "type": "likert"
+                },
+                "S4": {
+                    "name": "Compromisso face ao local de Trabalho",
+                    "type": "likert"
+                }
+            }
+        }
+    },
+    "Relações Sociais e Liderança": {
+        "id": "279517",
+        "topics": {
+            "freqRelacoesSociaisL": {
+                "S1": {
+                    "name": "Previsibilidade",
+                    "type": "likert"
+                },
+                "S2": {
+                    "name": "Recompensas",
+                    "type": "likert"
+                },
+                "S3": {
+                    "name": "Transparência do papel laboral desempenhado",
+                    "type": "likert"
+                },
+                "S4": {
+                    "name": "Conflitos de papéis Laborais",
+                    "type": "likert"
+                },
+                "S5": {
+                    "name": "Apoio Social de Colegas",
+                    "type": "likert"
+                },
+                "S6": {
+                    "name": "Apoio Social de Superiores",
+                    "type": "likert"
+                }
+            },
+            "freqQualidadeLideran": {
+                "S1": {
+                    "name": "Qualidade da Liderança",
+                    "type": "likert"
+                }
+            }
+        }
+    },
+    "Valores no Local de Trabalho": {
+        "id": "863491",
+        "topics": {
+            "freqValores": {
+                "S1": {
+                    "name": "Confiança Horizontal",
+                    "type": "likert"
+                },
+                "S2": {
+                    "name": "Confiança Vertical",
+                    "type": "likert"
+                },
+                "S3": {
+                    "name": "Justiça e Respeito",
+                    "type": "likert"
+                },
+                "S4": {
+                    "name": "Comunidade Social no Trabalho",
+                    "type": "likert"
+                }
+            },
+            "freqComportamentosOf": {
+                "S1": {
+                    "name": "Comportamentos Ofensivos",
+                    "type": "likert"
+                }
+            }
+        }
+    },
+    "Bem-Estar Geral": {
+        "id": "715493",
+        "topics": {
+            "quantInsegurancaLabo": {
+                "S1": {
+                    "name": "Insegurança Laboral",
+                    "type": "likert"
+                }
+            },
+            "quantConflitoTF": {
+                "S1": {
+                    "name": "Conflito Trabalho/Família",
+                    "type": "likert"
+                }
+            },
+            "quantSatisfacao": {
+                "S1": {
+                    "name": "Satisfação Laboral",
+                    "type": "likert"
+                }
+            },
+            "escalaSaudeGeral": {
+                "S1": {
+                    "name": "Saúde Geral",
+                    "type": "likert"
+                }
+            },
+            "freqBemEstar": {
+                "S1": {
+                    "name": "Problemas em dormir",
+                    "type": "likert"
+                },
+                "S2": {
+                    "name": "Burnout",
+                    "type": "likert"
+                },
+                "S3": {
+                    "name": "Stress",
+                    "type": "likert"
+                },
+                "S4": {
+                    "name": "Sintomas Depressivos",
+                    "type": "likert"
+                }
+            },
+            "freqEficacia": {
+                "S1": {
+                    "name": "Auto-Eficácia",
+                    "type": "likert"
+                }
+            }
+        }
+    }
+}

@@ -1,0 +1,262 @@
+{
+  "Exigências Quantitativas": {
+    "scale": [1,2,3,4,5],
+    "values": [1,2,3,4,5],
+    "max": 5,
+    "inverted": [],
+    "calculation": "mean"
+  },
+  "Ritmo de Trabalho": {
+    "scale": [1,2,3,4,5],
+    "values": [1,2,3,4,5],
+    "max": 5,
+    "inverted": [],
+    "calculation": "mean"
+  },
+  "Exigências Cognitivas": {
+    "scale": [1,2,3,4,5],
+    "values": [1,2,3,4,5],
+    "max": 5,
+    "inverted": [],
+    "calculation": "mean"
+  },
+  "Exigências Emocionais": {
+    "scale": [1,2,3,4,5],
+    "values": [1,2,3,4,5],
+    "max": 5,
+    "inverted": [],
+    "calculation": "mean"
+  },
+  "Autonomia": {
+    "scale": [1,2,3,4,5],
+    "values": [5,4,3,2,1],
+    "max": 5,
+    "inverted": [],
+    "calculation": "mean"
+  },
+  "Qualidade das Pausas": {
+    "scale": [1,2,3,4,5],
+    "values": [5,4,3,2,1],
+    "max": 5,
+    "inverted": [],
+    "calculation": "mean"
+  },
+  "Influência no Trabalho": {
+    "scale": [1,2,3,4,5],
+    "values": [5,4,3,2,1],
+    "max": 5,
+    "inverted": [],
+    "calculation": "mean"
+  },
+  "Possibilidades de Desenvolvimento": {
+    "scale": [1,2,3,4,5],
+    "values": [5,4,3,2,1],
+    "max": 5,
+    "inverted": [],
+    "calculation": "mean"
+  },
+  "Significado do Trabalho":{
+    "scale": [1,2,3,4,5],
+    "values": [5,4,3,2,1],
+    "max": 5,
+    "inverted": [],
+    "calculation": "mean"
+  },
+  "Compromisso face ao local de Trabalho":{
+    "scale": [1,2,3,4,5],
+    "values": [5,4,3,2,1],
+    "max": 5,
+    "inverted": [],
+    "calculation": "mean"
+  },
+  "Previsibilidade": {
+    "scale": [1,2,3,4,5],
+    "values": [5,4,3,2,1],
+    "max": 5,
+    "inverted": [],
+    "calculation": "mean"
+  },
+  "Recompensas": {
+    "scale": [1,2,3,4,5],
+    "values": [5,4,3,2,1],
+    "max": 5,
+    "inverted": [],
+    "calculation": "mean"
+  },
+  "Transparência do papel laboral desempenhado": {
+    "scale": [1,2,3,4,5],
+    "values": [5,4,3,2,1],
+    "max": 5,
+    "inverted": [],
+    "calculation": "mean"
+  },
+  "Conflitos de papéis Laborais": {
+    "scale": [1,2,3,4,5],
+    "values": [1,2,3,4,5],
+    "max": 5,
+    "inverted": [],
+    "calculation": "mean"
+  },
+  "Apoio Social de Colegas": {
+    "scale": [1,2,3,4,5],
+    "values": [5,4,3,2,1],
+    "max": 5,
+    "inverted": [],
+    "calculation": "mean"
+  },
+  "Apoio Social de Superiores": {
+    "scale": [1,2,3,4,5],
+    "values": [5,4,3,2,1],
+    "max": 5,
+    "inverted": [],
+    "calculation": "mean"
+  },
+  "Qualidade da Liderança": {
+    "scale": [1,2,3,4,5],
+    "values": [5,4,3,2,1],
+    "max": 5,
+    "inverted": [],
+    "calculation": "mean"
+  },
+  "Confiança Horizontal": {
+    "scale": [1,2,3,4,5],
+    "values": [1,2,3,4,5],
+    "max": 5,
+    "inverted": [2],
+    "calculation": "mean"
+  },
+  "Confiança Vertical": {
+    "scale": [1,2,3,4,5],
+    "values": [5,4,3,2,1],
+    "max": 5,
+    "inverted": [2],
+    "calculation": "mean"
+  },
+  "Justiça e Respeito": {
+    "scale": [1,2,3,4,5],
+    "values": [5,4,3,2,1],
+    "max": 5,
+    "inverted": [],
+    "calculation": "mean"
+  },
+  "Comunidade Social no Trabalho": {
+    "scale": [1,2,3,4,5],
+    "values": [5,4,3,2,1],
+    "max": 5,
+    "inverted": [],
+    "calculation": "mean"
+  },
+  "Comportamentos Ofensivos": {
+    "scale": [1,2,3,4,5],
+    "values": [1,2,3,4,5],
+    "max": 5,
+    "inverted": [],
+    "calculation": "mean"
+  },
+  "Insegurança Laboral":{
+    "scale": [1,2,3,4,5],
+    "values": [1,2,3,4,5],
+    "max": 5,
+    "inverted": [],
+    "calculation": "mean"
+  },
+  "Conflito Trabalho/Família": {
+    "scale": [1,2,3,4,5],
+    "values": [1,2,3,4,5],
+    "max": 5,
+    "inverted": [],
+    "calculation": "mean"
+  },
+  "Satisfação Laboral": {
+    "scale": [1,2,3,4,5],
+    "values": [5,4,3,2,1],
+    "max": 5,
+    "inverted": [],
+    "calculation": "mean"
+  },
+  "Saúde Geral": {
+    "scale": [1,2,3,4,5],
+    "values": [1,2,3,4,5],
+    "max": 5,
+    "inverted": [],
+    "calculation": "mean"
+  },
+  "Problemas em dormir": {
+    "scale": [1,2,3,4,5],
+    "values": [1,2,3,4,5],
+    "max": 5,
+    "inverted": [],
+    "calculation": "mean"
+  },
+  "Burnout": {
+    "scale": [1,2,3,4,5],
+    "values": [1,2,3,4,5],
+    "max": 5,
+    "inverted": [],
+    "calculation": "mean"
+  },
+  "Stress": {
+    "scale": [1,2,3,4,5],
+    "values": [1,2,3,4,5],
+    "max": 5,
+    "inverted": [],
+    "calculation": "mean"
+  },
+  "Sintomas Depressivos": {
+    "scale": [1,2,3,4,5],
+    "values": [1,2,3,4,5],
+    "max": 5,
+    "inverted": [],
+    "calculation": "mean"
+  },
+  "Auto-Eficácia": {
+    "scale": [1,2,3,4,5],
+    "values": [5,4,3,2,1],
+    "max": 5,
+    "inverted": [],
+    "calculation": "mean"
+  },
+  "Nível de Iluminação": {
+    "scale": [1,2,3],
+    "values": [0,1,0],
+    "max": 3,
+    "inverted": [],
+    "calculation": "sum"
+  },
+  "Ar": {
+    "scale": [1,2,3],
+    "values": [0,1,0],
+    "max": 2,
+    "inverted": [],
+    "calculation": "sum"
+  },
+  "Ruído": {
+    "scale": [1,2,3],
+    "values": [0,1,0],
+    "max": 1,
+    "inverted": [],
+    "calculation": "sum"
+  },
+  "Design do Escritório": {
+    "scale": [1,2,3,4,5],
+    "values": [1,0.75,0.5,0.25,0],
+    "max": 1,
+    "inverted": [],
+    "calculation": "sum"
+  },
+  "Organização do Escritório": {
+    "scale": [1,2],
+    "values": [0,1],
+    "max": 7,
+    "inverted": [],
+    "calculation": "sum"
+  },
+  "Privacidade do Escritório": {
+    "scale": [1,2,3,4,5],
+    "values": [1,0.75,0.5,0.25,0],
+    "max": 1,
+    "inverted": [],
+    "calculation": "mean"
+  }
+}
+
