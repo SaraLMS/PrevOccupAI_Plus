@@ -9,6 +9,7 @@ from typing import Dict
 # constants
 # ------------------------------------------------------------------------------------------------------------------- #
 RESULTS_FILE_PREFIX = 'results_'
+CSV = '.csv'
 
 # ------------------------------------------------------------------------------------------------------------------- #
 # public functions
@@ -42,9 +43,11 @@ def load_questionnaire_answers(folder_path: str, domain: str) -> Dict[str, pd.Da
         results_df = results_df.drop(results_df.columns[1:9], axis=1)
 
         # get questionnaire id from the file name
-        questionnaire_id = csv_file.replace(RESULTS_FILE_PREFIX, "")
+        questionnaire_id = csv_file.replace(RESULTS_FILE_PREFIX, "").replace(CSV, "")
 
         # save do results dictionary
         results_dict[questionnaire_id] = results_df
 
     return results_dict
+
+# TODO CHECK IF DOMAIN EXISTS

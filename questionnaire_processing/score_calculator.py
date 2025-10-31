@@ -1,74 +1,91 @@
 # ------------------------------------------------------------------------------------------------------------------- #
 # imports
 # ------------------------------------------------------------------------------------------------------------------- #
-import pandas as pd
-import os
 from pathlib import Path
-from typing import Dict, Any
-
+import os
+from typing import Dict
+import pandas as pd
 
 # internal imports
 from utils import load_json_file
-from questionnaire_loader import load_questionnaire_answers
-from json_parser import filter_config_dict_by_id
+from .questionnaire_loader import load_questionnaire_answers
+from .questionnaire_processor import filter_results_dataframe
+from .json_parser import get_questionnaire_name_from_json
 
 # ------------------------------------------------------------------------------------------------------------------- #
 # constants
 # ------------------------------------------------------------------------------------------------------------------- #
 CONFIG_FOLDER_NAME = 'config_files'
+JSON_SCORES_FILENAME = 'scores.json'
 JSON_PSICOSSOCIAL_FILENAME = 'cfg_psicossocial.json'
-LIKERT_SCALE = 'likert'
 
 # ------------------------------------------------------------------------------------------------------------------- #
 # public functions
 # ------------------------------------------------------------------------------------------------------------------- #
 
-def filter_results_dataframe(folder_path: str, domain: str):
+def calculate_psicossocial_scores(folder_path: str, domain: str):
 
-    # load results for all psicossocial questionnaires
+    # init dictionary to hold the scores
+    scores_df = pd.DataFrame()
+
+    # load results for all domain questionnaires into a dictionary
+    # (keys: questionnaire id, values: dataframe with the results)
     results_dict = load_questionnaire_answers(folder_path, domain)
 
-    # load json file with the info
+    # load json file with the info for the given domain
     config_dict = load_json_file(os.path.join(Path(__file__).parent, CONFIG_FOLDER_NAME, JSON_PSICOSSOCIAL_FILENAME))
 
-    # iterate through the multiple questionnaire results
+    # load json file with the scores info
+    scores_dict = load_json_file(os.path.join(Path(__file__).parent, CONFIG_FOLDER_NAME, JSON_SCORES_FILENAME))
+
+    # filter results_dict to hold only relevant information
+    results_dict = filter_results_dataframe(results_dict=results_dict, config_dict=config_dict)
+
+    # iterate through the results of the psicossocial questionnaires
     for questionnaire_id, results_df in results_dict.items():
 
-        # filter config dict to have only the information for this questionnaire
-        questionnaire_info_dict = filter_config_dict_by_id(config_dict, questionnaire_id)
+        # (1) get questionnaire name from id
+        questionnaire_name = get_questionnaire_name_from_json(config_dict, questionnaire_id)
 
-        # get questionnaire topics
-        topics_dict = questionnaire_info_dict.get("topics", {})
+        # find questionnaire name in the scores json file
+        calculation_method = scores_dict[questionnaire_name]["calculation"]
 
-        # cycle over the dictionary with the questionnaire info
-        for subtopic_name, subtopic_items in topics_dict.items():
-
-            # cycle over the inner dict containing the matrix ('S1', 'S2'....) information
-            for matrix_id, question_info_dict in subtopic_items.items():
-
-                # get the scale of the answers for the questions with the correspondent matrix id
-                scale = question_info_dict['type']
-
-                # Check if the DataFrame has a column containing the matrix_id
-                matching_columns = [col for col in results_df.columns if matrix_id in col]
-
-                # Apply cleaning depending on the scale type
-                for col in matching_columns:
-
-                    if scale == LIKERT_SCALE:
-
-                        # clean likert scale results
-                        pass
-
-                    else:
-                        # implement other scales
-                        pass
-
-
-    pass
-
+        # calculate scores per subject and add to dataframe
+        scores_series = _calculate_scores(results_df, calculation_method)
+    #
+    #     if 'id' not in scores_df.columns:
+    #
+    #         # add id to the final dataframe if not already there
+    #         scores_df['id'] = results_df['id']
+    #
+    #     # add scores
+    #     scores_df['questionnaire_id'] = scores_series
+    #
+    # # sort dataframe
+    # scores_df = scores_df.sort_values(by='id')
+    #
+    # return scores_df
 
 # ------------------------------------------------------------------------------------------------------------------- #
 # private functions
 # ------------------------------------------------------------------------------------------------------------------- #
 
+def _calculate_scores(results_df: pd.DataFrame, calculation_method: str) -> pd.Series:
+
+    # drop id column
+    results_df = results_df.drop(results_df.columns[0], axis=1)
+
+    if calculation_method == 'sum':
+
+        # sum all values per row
+        scores_series = results_df.sum(axis=1)
+
+    elif calculation_method == 'mean':
+
+        # calculate the mean of all values per row
+        scores_series = results_df.mean(axis=1)
+
+    else:
+        raise ValueError(f"The calculation method {calculation_method} does not exist.")
+
+    return scores_series

@@ -4,26 +4,16 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="d6637f5a-b481-472e-9cbc-1b523cdb0fbc" name="Changes" comment="fixed a bug in the synchronisation of the predictions">
-      <change afterPath="$PROJECT_DIR$/questionnaire_processing/__init__.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/questionnaire_processing/config_files/cfg_psicossocial.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/questionnaire_processing/config_files/scores.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/questionnaire_processing/json_parser.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/questionnaire_processing/questionnaire_loader.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/questionnaire_processing/score_calculator.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/utils.py" afterDir="false" />
+    <list default="true" id="d6637f5a-b481-472e-9cbc-1b523cdb0fbc" name="Changes" comment="minor code refactoring and started implementing questionnaire processing">
+      <change afterPath="$PROJECT_DIR$/main_quest.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/questionnaire_processing/questionnaire_processor.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/dictionaries/project.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dictionaries/project.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/HAR/classifier.py" beforeDir="false" afterPath="$PROJECT_DIR$/HAR/classifier.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/HAR/feature_extractor.py" beforeDir="false" afterPath="$PROJECT_DIR$/HAR/feature_extractor.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/HAR/load.py" beforeDir="false" afterPath="$PROJECT_DIR$/HAR/load.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/load/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/load_signals/__init__.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/load/interpolate.py" beforeDir="false" afterPath="$PROJECT_DIR$/load_signals/interpolate.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/load/meta_data.py" beforeDir="false" afterPath="$PROJECT_DIR$/load_signals/meta_data.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/load/parser.py" beforeDir="false" afterPath="$PROJECT_DIR$/load_signals/parser.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/load/path_handler.py" beforeDir="false" afterPath="$PROJECT_DIR$/load_signals/path_handler.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/load/raw_data_loader.py" beforeDir="false" afterPath="$PROJECT_DIR$/load_signals/raw_data_loader.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/main_signals.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/questionnaire_processing/json_parser.py" beforeDir="false" afterPath="$PROJECT_DIR$/questionnaire_processing/json_parser.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/questionnaire_processing/questionnaire_loader.py" beforeDir="false" afterPath="$PROJECT_DIR$/questionnaire_processing/questionnaire_loader.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/questionnaire_processing/score_calculator.py" beforeDir="false" afterPath="$PROJECT_DIR$/questionnaire_processing/score_calculator.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/utils.py" beforeDir="false" afterPath="$PROJECT_DIR$/utils.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -64,6 +54,7 @@
   &quot;keyToString&quot;: {
     &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
     &quot;Python.main.executor&quot;: &quot;Run&quot;,
+    &quot;Python.main_quest.executor&quot;: &quot;Debug&quot;,
     &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
     &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
     &quot;git-widget-placeholder&quot;: &quot;master&quot;,
@@ -80,7 +71,7 @@
     </key>
   </component>
   <component name="RunManager">
-    <configuration name="main" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+    <configuration name="main_signals" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="PrevOccupAI_Plus" />
       <option name="ENV_FILES" value="" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -93,7 +84,7 @@
       <option name="IS_MODULE_SDK" value="true" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/main.py" />
+      <option name="SCRIPT_NAME" value="C:\Users\srale\PycharmProjects\PrevOccupAI_Plus\main_signals.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -104,7 +95,7 @@
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="Python.main" />
+        <item itemvalue="Python.main_signals" />
       </list>
     </recent_temporary>
   </component>
@@ -227,7 +218,15 @@
       <option name="project" value="LOCAL" />
       <updated>1759925512818</updated>
     </task>
-    <option name="localTasksCounter" value="14" />
+    <task id="LOCAL-00014" summary="minor code refactoring and started implementing questionnaire processing">
+      <option name="closed" value="true" />
+      <created>1761679223081</created>
+      <option name="number" value="00014" />
+      <option name="presentableId" value="LOCAL-00014" />
+      <option name="project" value="LOCAL" />
+      <updated>1761679223081</updated>
+    </task>
+    <option name="localTasksCounter" value="15" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
@@ -243,7 +242,8 @@
     <MESSAGE value="code refactoring" />
     <MESSAGE value="added requirements.txt" />
     <MESSAGE value="fixed a bug in the synchronisation of the predictions" />
-    <option name="LAST_COMMIT_MESSAGE" value="fixed a bug in the synchronisation of the predictions" />
+    <MESSAGE value="minor code refactoring and started implementing questionnaire processing" />
+    <option name="LAST_COMMIT_MESSAGE" value="minor code refactoring and started implementing questionnaire processing" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -255,5 +255,10 @@
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
+    <watches-manager>
+      <configuration name="PythonConfigurationType">
+        <watch expression="config_dict" />
+      </configuration>
+    </watches-manager>
   </component>
 </project>

@@ -22,8 +22,21 @@ def filter_config_dict_by_id(config_dict: Dict[str, Dict[str, Any]], questionnai
     return next(iter(filtered_config.values()))
 
 
-def get_scale_from_json(filtered_dict: Dict[str, Any]):
+def get_questionnaire_name_from_json(config_dict: Dict[str, Dict[str, Any]], questionnaire_id: str) -> str:
 
+    # iterate through the several questionnaires in the config dict
+    for questionnaire_name, questionnaire_info in config_dict.items():
+
+        # check which id matches
+        if questionnaire_info.get('id') == questionnaire_id:
+
+            # return the name of the questionnaire with the given id
+            return questionnaire_name
+
+    raise ValueError(f"No questionnaire found with id: {questionnaire_id}")
+
+
+def get_calculation_method_from_json(config_dict: Dict[str, Dict[str, Any]], questionnaire_name: str):
     pass
 
 # ------------------------------------------------------------------------------------------------------------------- #

@@ -18,7 +18,7 @@ def load_json_file(json_path: str) -> Dict[Any, Any]:
     """
 
     # read json file to a features dict
-    with open(json_path, "r") as file:
+    with open(json_path, "r", encoding='utf-8') as file:
         json_dict = json.load(file)
 
     return json_dict
