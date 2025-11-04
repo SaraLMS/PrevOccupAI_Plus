@@ -1,7 +1,7 @@
 # ------------------------------------------------------------------------------------------------------------------- #
 # imports
 # ------------------------------------------------------------------------------------------------------------------- #
-from questionnaire_processing.score_calculator import calculate_psicossocial_scores
+from questionnaire_processing.score_calculator import calculate_linear_scores
 
 # ------------------------------------------------------------------------------------------------------------------- #
 # constants
@@ -20,5 +20,5 @@ if __name__ == '__main__':
 
     if PROCESS_PSICOSSOCIAL:
 
-        results_df = calculate_psicossocial_scores(quest_path, domain)
+        calculate_linear_scores(quest_path, domain)
 

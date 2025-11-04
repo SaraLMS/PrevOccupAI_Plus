@@ -4,14 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="d6637f5a-b481-472e-9cbc-1b523cdb0fbc" name="Changes" comment="minor code refactoring and started implementing questionnaire processing">
-      <change afterPath="$PROJECT_DIR$/main_quest.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/questionnaire_processing/questionnaire_processor.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/dictionaries/project.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dictionaries/project.xml" afterDir="false" />
+    <list default="true" id="d6637f5a-b481-472e-9cbc-1b523cdb0fbc" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/main_signals.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/questionnaire_processing/json_parser.py" beforeDir="false" afterPath="$PROJECT_DIR$/questionnaire_processing/json_parser.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/questionnaire_processing/questionnaire_loader.py" beforeDir="false" afterPath="$PROJECT_DIR$/questionnaire_processing/questionnaire_loader.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main_quest.py" beforeDir="false" afterPath="$PROJECT_DIR$/main_quest.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/questionnaire_processing/score_calculator.py" beforeDir="false" afterPath="$PROJECT_DIR$/questionnaire_processing/score_calculator.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/utils.py" beforeDir="false" afterPath="$PROJECT_DIR$/utils.py" afterDir="false" />
     </list>
@@ -54,7 +49,8 @@
   &quot;keyToString&quot;: {
     &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
     &quot;Python.main.executor&quot;: &quot;Run&quot;,
-    &quot;Python.main_quest.executor&quot;: &quot;Debug&quot;,
+    &quot;Python.main_quest.executor&quot;: &quot;Run&quot;,
+    &quot;Python.main_signals.executor&quot;: &quot;Debug&quot;,
     &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
     &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
     &quot;git-widget-placeholder&quot;: &quot;master&quot;,
@@ -226,7 +222,15 @@
       <option name="project" value="LOCAL" />
       <updated>1761679223081</updated>
     </task>
-    <option name="localTasksCounter" value="15" />
+    <task id="LOCAL-00015" summary="implementing questionnaire processing">
+      <option name="closed" value="true" />
+      <created>1761939606710</created>
+      <option name="number" value="00015" />
+      <option name="presentableId" value="LOCAL-00015" />
+      <option name="project" value="LOCAL" />
+      <updated>1761939606710</updated>
+    </task>
+    <option name="localTasksCounter" value="16" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
@@ -243,7 +247,8 @@
     <MESSAGE value="added requirements.txt" />
     <MESSAGE value="fixed a bug in the synchronisation of the predictions" />
     <MESSAGE value="minor code refactoring and started implementing questionnaire processing" />
-    <option name="LAST_COMMIT_MESSAGE" value="minor code refactoring and started implementing questionnaire processing" />
+    <MESSAGE value="implementing questionnaire processing" />
+    <option name="LAST_COMMIT_MESSAGE" value="implementing questionnaire processing" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
