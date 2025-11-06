@@ -67,3 +67,65 @@ VALID_MBAN_DATA = [NSEQ, EMG, XACC, YACC, ZACC]
 
 MBAN_LEFT = 'mBAN_left'
 MBAN_RIGHT = 'mBAN_right'
+
+# ------------------------------------------------------------------------------------------------------------------- #
+# Questionnaire constants
+# ------------------------------------------------------------------------------------------------------------------- #
+CONFIG_FOLDER_NAME = 'config_files'
+RESULTS_FOLDER_NAME = 'results'
+
+# ------------------------------------------------------------------------------------------------------------------- #
+# Estilo de Vida constants
+# ------------------------------------------------------------------------------------------------------------------- #
+
+EV_COLUMN_NAMES_MAP = {
+        'q1': 'fuma',
+        'q1a': 'cigarros',
+        'q1b': 'tempo',
+        'q1c': 'cigarros_passado',
+        'q1d': 'tempo_passado',
+        'q2': 'alcool',
+        'q2a': 'bebidas',
+    }
+
+EV_ANSWERS_MAP = {
+        'fuma': {
+            'A1': 'Sim, diariamente',
+            'A2': 'Ocasionalmente',
+            'A3': 'Não, mas fumou no passado',
+            'A4': 'Não, nunca fumou',
+            'A5': 'Não sabe/Não responde',
+        },
+        'alcool': {
+            'A1': 'Diariamente',
+            'A2': 'Ocasionalmente',
+            'A3': 'Nunca',
+            'A4': 'Não sabe/Não responde',
+        },
+        'bebidas': {
+            'A1': '< 3 semana',
+            'A2': '> 3 semana',
+            'A3': '> 3 dia',
+        },
+    }
+
+
+# ------------------------------------------------------------------------------------------------------------------- #
+# Atividade Fisica constants
+# ------------------------------------------------------------------------------------------------------------------- #
+
+
+AF_OLD_COLUMNS = [
+    'q1a', 'q1b[SQ001]', 'q1b[SQ002]',
+    'q2a', 'q2b[SQ001]', 'q2b[SQ002]',
+    'q3a', 'q3b[SQ001]', 'q3b[SQ002]', 'q3c',
+    'q4a[SQ001]', 'q4a[SQ002]', 'q4b[SQ001]', 'q4b[SQ002]'
+]
+
+AF_NEW_COLUMNS = [
+    'vigorosa_dias', 'vigorosa_horas', 'vigorosa_minutos',
+    'moderada_dias', 'moderada_horas', 'moderada_minutos',
+    'caminhada_dias', 'caminhada_horas', 'caminhada_minutos', 'caminhada_ritmo',
+    'sentada_semana_horas', 'sentada_semana_minutos',
+    'sentada_fds_horas', 'sentada_fds_minutos'
+]

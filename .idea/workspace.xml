@@ -4,11 +4,17 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="d6637f5a-b481-472e-9cbc-1b523cdb0fbc" name="Changes" comment="">
+    <list default="true" id="d6637f5a-b481-472e-9cbc-1b523cdb0fbc" name="Changes" comment="finished implementing the scores for the psicossocial and ambiente questionnaires">
+      <change afterPath="$PROJECT_DIR$/questionnaire_processing/config_files/cfg_ambiente.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/questionnaire_processing/config_files/cfg_pessoais.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/questionnaire_processing/personal_score_calculator.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/dictionaries/project.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dictionaries/project.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/constants.py" beforeDir="false" afterPath="$PROJECT_DIR$/constants.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main_quest.py" beforeDir="false" afterPath="$PROJECT_DIR$/main_quest.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/questionnaire_processing/score_calculator.py" beforeDir="false" afterPath="$PROJECT_DIR$/questionnaire_processing/score_calculator.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/utils.py" beforeDir="false" afterPath="$PROJECT_DIR$/utils.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/questionnaire_processing/json_parser.py" beforeDir="false" afterPath="$PROJECT_DIR$/questionnaire_processing/json_parser.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/questionnaire_processing/questionnaire_processor.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/questionnaire_processing/score_calculator.py" beforeDir="false" afterPath="$PROJECT_DIR$/questionnaire_processing/linear_score_calculator.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -230,7 +236,15 @@
       <option name="project" value="LOCAL" />
       <updated>1761939606710</updated>
     </task>
-    <option name="localTasksCounter" value="16" />
+    <task id="LOCAL-00016" summary="finished implementing the scores for the psicossocial and ambiente questionnaires">
+      <option name="closed" value="true" />
+      <created>1762252419221</created>
+      <option name="number" value="00016" />
+      <option name="presentableId" value="LOCAL-00016" />
+      <option name="project" value="LOCAL" />
+      <updated>1762252419221</updated>
+    </task>
+    <option name="localTasksCounter" value="17" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
@@ -248,7 +262,8 @@
     <MESSAGE value="fixed a bug in the synchronisation of the predictions" />
     <MESSAGE value="minor code refactoring and started implementing questionnaire processing" />
     <MESSAGE value="implementing questionnaire processing" />
-    <option name="LAST_COMMIT_MESSAGE" value="implementing questionnaire processing" />
+    <MESSAGE value="finished implementing the scores for the psicossocial and ambiente questionnaires" />
+    <option name="LAST_COMMIT_MESSAGE" value="finished implementing the scores for the psicossocial and ambiente questionnaires" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

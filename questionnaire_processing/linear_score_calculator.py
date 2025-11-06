@@ -10,14 +10,12 @@ import pandas as pd
 from utils import load_json_file, create_dir
 from .questionnaire_loader import load_questionnaire_answers
 from .json_parser import get_questionnaire_name_from_json
+from constants import CONFIG_FOLDER_NAME, RESULTS_FOLDER_NAME
 
 # ------------------------------------------------------------------------------------------------------------------- #
 # constants
 # ------------------------------------------------------------------------------------------------------------------- #
-CONFIG_FOLDER_NAME = 'config_files'
-RESULTS_FOLDER_NAME = 'results'
 JSON_SCORES_FILENAME = 'scores.json'
-JSON_PSICOSSOCIAL_FILENAME = 'cfg_psicossocial.json'
 
 LIKERT_SCALE = 'likert'
 # ------------------------------------------------------------------------------------------------------------------- #
@@ -38,7 +36,7 @@ def calculate_linear_scores(folder_path: str, domain: str) -> None:
     results_dict = load_questionnaire_answers(folder_path, domain)
 
     # load json file with the info for the given domain
-    config_dict = load_json_file(os.path.join(Path(__file__).parent, CONFIG_FOLDER_NAME, JSON_PSICOSSOCIAL_FILENAME))
+    config_dict = load_json_file(os.path.join(Path(__file__).parent, CONFIG_FOLDER_NAME, f"cfg_{domain.lower()}.json"))
 
     # load json file with the scores info
     scores_dict = load_json_file(os.path.join(Path(__file__).parent, CONFIG_FOLDER_NAME, JSON_SCORES_FILENAME))

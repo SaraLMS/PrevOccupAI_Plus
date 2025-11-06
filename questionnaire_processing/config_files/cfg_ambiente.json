@@ -1,0 +1,49 @@
+{
+    "Ambiente de Escritório": {
+        "id": "492239",
+        "topics": {
+            "snEdificios": {
+                "S1": {
+                    "name": "Nível de Iluminação",
+                    "type": "likert"
+                },
+                "S2": {
+                    "name": "Ar",
+                    "type": "likert"
+                },
+                "S3": {
+                    "name": "Ruído",
+                    "type": "likert"
+                }
+            },
+            "satLocalTrab": {
+                "": {
+                    "name": "Design do Escritório",
+                    "type": "likert"
+                }
+            }
+        }
+    },
+    "Organização do Escritório": {
+        "id": "835739",
+        "topics": {
+            "snLayoutEscritorio": {
+                "": {
+                    "name": "Organização do Escritório",
+                    "type": "likert"
+                }
+            }
+        }
+    },
+    "Privacidade do Escritório": {
+        "id": "688146",
+        "topics": {
+            "freqPrivacidade": {
+                "": {
+                    "name": "Privacidade do Escritório",
+                    "type": "likert"
+                }
+            }
+        }
+    }
+}

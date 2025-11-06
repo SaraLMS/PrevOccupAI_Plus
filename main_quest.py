@@ -1,7 +1,7 @@
 # ------------------------------------------------------------------------------------------------------------------- #
 # imports
 # ------------------------------------------------------------------------------------------------------------------- #
-from questionnaire_processing.score_calculator import calculate_linear_scores
+from questionnaire_processing.linear_score_calculator import calculate_linear_scores
 
 # ------------------------------------------------------------------------------------------------------------------- #
 # constants
@@ -9,7 +9,7 @@ from questionnaire_processing.score_calculator import calculate_linear_scores
 PROCESS_PSICOSSOCIAL = True
 
 quest_path = "D:\\Backup PrevOccupAI data\\jan2023\\data\\group3\\questionnaires"
-domain = "Psicosocial"
+domain = "Ambiente"
 
 # ------------------------------------------------------------------------------------------------------------------- #
 # program starts here
@@ -18,7 +18,6 @@ domain = "Psicosocial"
 if __name__ == '__main__':
 
 
-    if PROCESS_PSICOSSOCIAL:
 
-        calculate_linear_scores(quest_path, domain)
+    calculate_linear_scores(quest_path, domain)
 

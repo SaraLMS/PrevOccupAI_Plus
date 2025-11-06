@@ -35,10 +35,6 @@ def get_questionnaire_name_from_json(config_dict: Dict[str, Dict[str, Any]], que
 
     raise ValueError(f"No questionnaire found with id: {questionnaire_id}")
 
-
-def get_calculation_method_from_json(config_dict: Dict[str, Dict[str, Any]], questionnaire_name: str):
-    pass
-
 # ------------------------------------------------------------------------------------------------------------------- #
 # private functions
 # ------------------------------------------------------------------------------------------------------------------- #
