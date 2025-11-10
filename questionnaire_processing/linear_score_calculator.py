@@ -7,10 +7,10 @@ from typing import List, Optional
 import pandas as pd
 
 # internal imports
-from utils import load_json_file, create_dir
+from utils import load_json_file, create_dir, get_group_from_path
 from .questionnaire_loader import load_questionnaire_answers
 from .json_parser import get_questionnaire_name_from_json
-from constants import CONFIG_FOLDER_NAME, RESULTS_FOLDER_NAME
+from constants import CONFIG_FOLDER_NAME, RESULTS_FOLDER_NAME, CSV
 
 # ------------------------------------------------------------------------------------------------------------------- #
 # constants
@@ -98,8 +98,8 @@ def calculate_linear_scores(folder_path: str, domain: str) -> None:
         questionnaire_scores_df = questionnaire_scores_df.set_index('id').sort_index()
 
         # save dataframe into a csv file
-        folder_path = create_dir(Path(__file__).parent, os.path.join(RESULTS_FOLDER_NAME, domain))
-        questionnaire_scores_df.to_csv(os.path.join(folder_path, questionnaire_name))
+        folder_path = create_dir(Path(__file__).parent, os.path.join(RESULTS_FOLDER_NAME, get_group_from_path(folder_path), domain))
+        questionnaire_scores_df.to_csv(os.path.join(folder_path, f"{questionnaire_name}{CSV}"))
 
 # ------------------------------------------------------------------------------------------------------------------- #
 # private functions

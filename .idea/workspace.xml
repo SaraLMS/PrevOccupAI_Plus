@@ -4,17 +4,23 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="d6637f5a-b481-472e-9cbc-1b523cdb0fbc" name="Changes" comment="finished implementing the scores for the psicossocial and ambiente questionnaires">
-      <change afterPath="$PROJECT_DIR$/questionnaire_processing/config_files/cfg_ambiente.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/questionnaire_processing/config_files/cfg_pessoais.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/questionnaire_processing/personal_score_calculator.py" afterDir="false" />
+    <list default="true" id="d6637f5a-b481-472e-9cbc-1b523cdb0fbc" name="Changes" comment="implementing personal scores">
+      <change afterPath="$PROJECT_DIR$/questionnaire_processing/biomecanical_score_calculator.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/questionnaire_processing/config_files/cfg_biomecanico.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/questionnaire_processing/rosa/__init__.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/questionnaire_processing/rosa/rosa_question_mappings.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/questionnaire_processing/rosa/rosa_score_cards.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/questionnaire_processing/rosa/rosa_tools.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/dictionaries/project.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dictionaries/project.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/constants.py" beforeDir="false" afterPath="$PROJECT_DIR$/constants.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main_quest.py" beforeDir="false" afterPath="$PROJECT_DIR$/main_quest.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/questionnaire_processing/json_parser.py" beforeDir="false" afterPath="$PROJECT_DIR$/questionnaire_processing/json_parser.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/questionnaire_processing/questionnaire_processor.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/questionnaire_processing/score_calculator.py" beforeDir="false" afterPath="$PROJECT_DIR$/questionnaire_processing/linear_score_calculator.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/questionnaire_processing/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/questionnaire_processing/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/questionnaire_processing/config_files/cfg_psicossocial.json" beforeDir="false" afterPath="$PROJECT_DIR$/questionnaire_processing/config_files/cfg_psicosocial.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/questionnaire_processing/linear_score_calculator.py" beforeDir="false" afterPath="$PROJECT_DIR$/questionnaire_processing/linear_score_calculator.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/questionnaire_processing/personal_score_calculator.py" beforeDir="false" afterPath="$PROJECT_DIR$/questionnaire_processing/personal_score_calculator.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/questionnaire_processing/questionnaire_loader.py" beforeDir="false" afterPath="$PROJECT_DIR$/questionnaire_processing/questionnaire_loader.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/utils.py" beforeDir="false" afterPath="$PROJECT_DIR$/utils.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -51,23 +57,25 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
-    &quot;Python.main.executor&quot;: &quot;Run&quot;,
-    &quot;Python.main_quest.executor&quot;: &quot;Run&quot;,
-    &quot;Python.main_signals.executor&quot;: &quot;Debug&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;master&quot;,
-    &quot;last_opened_file_path&quot;: &quot;C:/Users/srale/PycharmProjects/PrevOccupAI_Plus/questionnaire_processing/config_files&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "ModuleVcsDetector.initialDetectionPerformed": "true",
+    "Python.main.executor": "Run",
+    "Python.main_quest.executor": "Run",
+    "Python.main_signals.executor": "Run",
+    "Python.personal_score_calculator.executor": "Run",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "git-widget-placeholder": "master",
+    "last_opened_file_path": "C:/Users/srale/PycharmProjects/PrevOccupAI_Plus/questionnaire_processing/config_files"
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="C:\Users\srale\PycharmProjects\PrevOccupAI_Plus\questionnaire_processing\config_files" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\srale\PycharmProjects\PrevOccupAI_Plus\questionnaire_processing\rosa" />
       <recent name="C:\Users\srale\PycharmProjects\PrevOccupAI_Plus\HAR" />
       <recent name="C:\Users\srale\PycharmProjects\PrevOccupAI_Plus" />
     </key>
@@ -244,7 +252,15 @@
       <option name="project" value="LOCAL" />
       <updated>1762252419221</updated>
     </task>
-    <option name="localTasksCounter" value="17" />
+    <task id="LOCAL-00017" summary="implementing personal scores">
+      <option name="closed" value="true" />
+      <created>1762449506226</created>
+      <option name="number" value="00017" />
+      <option name="presentableId" value="LOCAL-00017" />
+      <option name="project" value="LOCAL" />
+      <updated>1762449506226</updated>
+    </task>
+    <option name="localTasksCounter" value="18" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
@@ -263,7 +279,8 @@
     <MESSAGE value="minor code refactoring and started implementing questionnaire processing" />
     <MESSAGE value="implementing questionnaire processing" />
     <MESSAGE value="finished implementing the scores for the psicossocial and ambiente questionnaires" />
-    <option name="LAST_COMMIT_MESSAGE" value="finished implementing the scores for the psicossocial and ambiente questionnaires" />
+    <MESSAGE value="implementing personal scores" />
+    <option name="LAST_COMMIT_MESSAGE" value="implementing personal scores" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

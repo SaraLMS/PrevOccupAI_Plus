@@ -7,8 +7,9 @@ import pandas as pd
 
 # internal imports
 from .questionnaire_loader import load_questionnaire_answers
-from utils import load_json_file, create_dir
-from constants import CONFIG_FOLDER_NAME, RESULTS_FOLDER_NAME, EV_COLUMN_NAMES_MAP, EV_ANSWERS_MAP, AF_NEW_COLUMNS, AF_OLD_COLUMNS
+from utils import load_json_file, create_dir, get_group_from_path
+from constants import (CONFIG_FOLDER_NAME, RESULTS_FOLDER_NAME, EV_COLUMN_NAMES_MAP, EV_ANSWERS_MAP, AF_NEW_COLUMNS,
+                       AF_OLD_COLUMNS, DD_ANSWERS_MAP, CSV)
 
 # -------------------------------------------------------------------------------------------------------------------- #
 # constants
@@ -38,7 +39,7 @@ def calculate_personal_scores(folder_path):
     # load config json file
     config_dict = load_json_file(os.path.join(Path(__file__).parent, CONFIG_FOLDER_NAME, "cfg_pessoais.json"))
 
-    for questionnaire_id in results_dict.keys():
+    for questionnaire_id, answers_df in results_dict.items():
 
         # Check if the questionnaire_id exists in config_dict
         if questionnaire_id not in config_dict:
@@ -49,13 +50,25 @@ def calculate_personal_scores(folder_path):
         questionnaire_name = config_dict[questionnaire_id]
 
         if questionnaire_name == DADOS_DEMOGRAFICOS:
-            pass
+
+            results_df = _get_dados_demograficos_results(answers_df)
+
         elif questionnaire_name == ESTILO_DE_VIDA:
-            pass
+
+            results_df = _get_estilo_vida_results(answers_df)
 
         # it's atividade fisica
         else:
-            pass
+            results_df = _get_atividade_fisica_results(answers_df)
+
+
+        # set id column to int, set as index of the dataframe, and order
+        results_df['id.1'] = pd.to_numeric(results_df['id.1'], errors='coerce')
+        results_df = results_df.set_index('id.1').sort_index()
+
+        # save dataframe into a csv file
+        folder_path = create_dir(Path(__file__).parent, os.path.join(RESULTS_FOLDER_NAME, get_group_from_path(folder_path),'pessoais'))
+        results_df.to_csv(os.path.join(folder_path, f"{questionnaire_name}{CSV}"))
 
 
 # -------------------------------------------------------------------------------------------------------------------- #
@@ -64,34 +77,26 @@ def calculate_personal_scores(folder_path):
 
 def _get_dados_demograficos_results(results_df: pd.DataFrame) -> pd.DataFrame:
     """
-    No scores are calculated in this questionnaire. Answers are cleaned for better readability
-    :return:
+    Cleans and standardizes demographic data for readability and consistency.
+    No scores are calculated in this questionnaire.
     """
     # create copy to avoid warnings
-    results_df = results_df.copy()
+    df = results_df.copy()
 
-    # replace sex column with F - female, M- malet, O- other
-    results_df['sexo'] = results_df['sexo'].replace(['A1', 'A2', 'A3'], ['F', 'M', 'O'])
+    # replace coded answers with readable text
+    for col, mapping in DD_ANSWERS_MAP.items():
+        if col in df.columns:
+            df[col] = df[col].replace(mapping)
 
-    # correct values inserted in m instead of cm
-    results_df.loc[results_df['altura'] < 10, 'altura'] *= 100
+    # correct height values (entered in meters instead of cm)
+    if 'altura' in df.columns:
+        df.loc[df['altura'] < 10, 'altura'] *= 100
 
-    # replace sex column with D - direito, E - esquerdo, O - outro
-    results_df['mao'] = results_df['mao'].replace(['A1', 'A2', 'A3'], ['D', 'E', 'O'])
+    # correct weekly working hours (entered as daily hours * 5)
+    if 'horasTrabalho' in df.columns:
+        df.loc[df['horasTrabalho'] < 10, 'horasTrabalho'] *= 5
 
-    results_df['estadoCivil'] = results_df['estadoCivil'].replace(['A1', 'A2', 'A3', 'A4', 'A5'],
-                                          ['Solteiro', 'Casado', 'Divorciado', 'Viúvo', 'União de Facto'])
-
-    results_df['habilitacoes'] = results_df['habilitacoes'].replace(['A1', 'A2', 'A3', 'A4', 'A5'],
-                                          ['Ensino Obrigatório (9ºano)', 'Ensino Secundário (10º a 12º ano)',
-                                           'Ensino Técnico-profissional',
-                                           'Ensino Superior (bacharelato ou licenciatura)',
-                                           'Ensino Superior Pós-graduado (mestrado ou doutoramento)'])
-
-    # correct weekly working hours since sometimes these are inserted as daily working hours (*5 days)
-    results_df.loc[results_df.horasTrabalho < 10, 'horasTrabalho'] *= 5
-
-    return results_df
+    return df
 
 
 def _get_estilo_vida_results(results_df: pd.DataFrame) -> pd.DataFrame:
@@ -145,6 +150,13 @@ def _get_atividade_fisica_results(results_df: pd.DataFrame) -> pd.DataFrame:
     # Calculate total time and truncate activity durations
     df = _calculate_total_time_and_truncate(df, ['vigorosa', 'moderada', 'caminhada'])
 
+    # create total activity columns
+    # raw total
+    df["total_atividade"] = (df["vigorosa_t"] + df["moderada_t"] + df["caminhada_t"])
+
+    # total activity column after truncating (max 180 min of the activity)
+    df["total_atividade_ed"] = (df["vigorosa_t_trunc"] + df["moderada_t_trunc"] + df["caminhada_t_trunc"])
+
     # Calculate MET scores
     df = _calculate_met_scores(df)
 
@@ -183,6 +195,7 @@ def _calculate_total_time_and_truncate(df: pd.DataFrame, prefixes: list) -> pd.D
 
         # if less than 10 assign 0
         df.loc[df[total_time_col] < 10, trunc_col] = 0
+
     return df
 
 

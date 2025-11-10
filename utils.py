@@ -4,6 +4,7 @@
 import json
 from typing import Dict, Any
 import os
+import re
 
 # ------------------------------------------------------------------------------------------------------------------- #
 # public functions
@@ -42,3 +43,16 @@ def create_dir(path, folder_name):
         os.makedirs(new_path)
 
     return new_path
+
+
+def get_group_from_path(folder_path: str) -> str:
+
+    # find group pattern
+    match = re.search(r'group\d+', folder_path)
+
+    if match:
+
+        # get first and only match
+        return match.group()
+
+    return 'no_group'
