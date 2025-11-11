@@ -77,7 +77,7 @@ def calculate_personal_scores(folder_path):
 
 def _get_dados_demograficos_results(results_df: pd.DataFrame) -> pd.DataFrame:
     """
-    Cleans and standardizes demographic data for readability and consistency.
+    Cleans and standardizes data for readability and consistency.
     No scores are calculated in this questionnaire.
     """
     # create copy to avoid warnings

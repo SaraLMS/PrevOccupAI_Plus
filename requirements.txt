@@ -7,3 +7,4 @@ scipy~=1.16.1
 tqdm~=4.67.1
 matplotlib~=3.10.5
 pyquaternion~=0.9.9
+citric~=2.0.0

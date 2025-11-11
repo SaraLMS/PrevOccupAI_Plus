@@ -1,8 +1,7 @@
 # ------------------------------------------------------------------------------------------------------------------- #
 # imports
 # ------------------------------------------------------------------------------------------------------------------- #
-from questionnaire_processing.linear_score_calculator import calculate_linear_scores
-from questionnaire_processing.personal_score_calculator import calculate_personal_scores
+import questionnaire_processing as qp
 
 # ------------------------------------------------------------------------------------------------------------------- #
 # constants
@@ -10,9 +9,11 @@ from questionnaire_processing.personal_score_calculator import calculate_persona
 PROCESS_PSICOSSOCIAL = False
 PROCESS_PESSOAIS = False
 PROCESS_AMBIENTE = False
+PROCESS_BIOMECANICO = False
+GENERATE_LS_RESULTS = True
 
 quest_path = "D:\\Backup PrevOccupAI data\\jan2023\\data\\group3\\questionnaires"
-domain = "psicosocial"
+ls_output_path = "C:\\Users\\srale\\Desktop\\TESTE"
 
 # ------------------------------------------------------------------------------------------------------------------- #
 # program starts here
@@ -22,12 +23,17 @@ if __name__ == '__main__':
 
 
     if PROCESS_PSICOSSOCIAL:
-        calculate_linear_scores(quest_path, domain='psicosocial')
+        qp.calculate_linear_scores(quest_path, domain='psicosocial')
 
     if PROCESS_AMBIENTE:
-        calculate_linear_scores(quest_path, domain='ambiente')
+        qp.calculate_linear_scores(quest_path, domain='ambiente')
 
     if PROCESS_PESSOAIS:
-        calculate_personal_scores(quest_path)
+        qp.calculate_personal_scores(quest_path)
+
+    if PROCESS_BIOMECANICO:
+        qp.calculate_biomechanical_scores(quest_path)
 
 
+    if GENERATE_LS_RESULTS:
+        qp.generate_results_csv_files(ls_output_path)

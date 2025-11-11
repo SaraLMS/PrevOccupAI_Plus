@@ -79,6 +79,13 @@ MBAN_RIGHT = 'mBAN_right'
 CONFIG_FOLDER_NAME = 'config_files'
 RESULTS_FOLDER_NAME = 'results'
 
+PSICOSSOCIAL = 'psicosocial'
+AMBIENTE = 'ambiente'
+BIOMECANICO = 'biomecanico'
+PESSOAIS = 'pessoais'
+
+QUESTIONNAIRE_DOMAINS = [PSICOSSOCIAL, AMBIENTE, BIOMECANICO, PESSOAIS]
+
 # ------------------------------------------------------------------------------------------------------------------- #
 # Estilo de Vida constants
 # ------------------------------------------------------------------------------------------------------------------- #
@@ -164,4 +171,37 @@ DD_ANSWERS_MAP = {
         'A4': 'Ensino Superior (bacharelato ou licenciatura)',
         'A5': 'Ensino Superior Pós-graduado (mestrado ou doutoramento)',
     },
+}
+
+# ------------------------------------------------------------------------------------------------------------------- #
+# Incapacidade e Sofrimento associados a Dor constants
+# ------------------------------------------------------------------------------------------------------------------- #
+
+ID_OLD_COLUMNS = ['SQ001', 'SQ002', 'SQ003', 'SQ004', 'SQ005', 'SQ006', 'SQ007', 'SQ008', 'SQ009']
+
+ID_NEW_COLUMNS = ['Cervical / pescoço', 'Ombros', 'Região dorsal superior / Torácica',
+                       'Braços(cotovelo / antebraço)', 'Punhos / mãos / dedos', 'Região dorsal inferior / Lombar',
+                       'Ancas / coxas', 'Joelhos', 'Pés / tornozelos']
+
+ID_ANSWERS_MAP = {
+    "incapacidade_sofrimento": {
+        "A1": "A2",
+        "A2": "leve",
+        "A3": "leve",
+        "A4": "leve",
+        "A5": "moderada",
+        "A6": "moderada",
+        "A7": "moderada",
+        "A8": "severa",
+        "A9": "severa",
+        "A10": "severa"
+    },
+    "tempo": {
+        "A1": "aguda",
+        "A2": "crónica",
+        "A3": "crónica",
+        "A4": "crónica",
+        "A5": "crónica",
+        "A6": "crónica"
+    }
 }
